@@ -2,7 +2,7 @@
 
 A leaderboard should motivate students to complete more and different tests and aim for higher scores, not excessively repeat a test they have a good score on or rush to get any score on as many tests as possible.
 
-To do this, their leaderboard position takes into account both the number of tests completed and their average percentage correct on their latest attempt. Tests students haven't completed are considered to have a latest score of 0 when calculating leaderboard positon, but as this will make most students' average much lower than they would expect, the average displayed is only the average of the tests they have completed.
+To do this, their leaderboard position takes into account both the number of tests completed and their average percentage correct on their latest attempt. Tests students haven't completed are considered to have a latest score of 0 when calculating leaderboard positon, but as this will make most students' average much lower than they would expect, the average displayed is the average of the tests they have completed.
 
 ```
 EVENT on page load THEN
@@ -23,7 +23,7 @@ EVENT on page load THEN
 	IF logged in student is on leaderboard THEN
 		DRAW highlight logged in student's leaderboard position
 	ELSE
-		DRAW text "You are at <position> with and average of <number> from completing <number> tests."
+		DRAW text "You are at <position> with an average of <number> from completing <number> tests."
 	END
 END
 ```
