@@ -1,9 +1,30 @@
 header {
-    /* width: 100%; */
-    border-bottom: 1px solid red;
     text-align: center;
 }
 
 header h1 {
     margin: 10px;
+}
+
+.body {
+    min-height: CALC(100vh - 54px); /* window height minus header height */
+    background-image: url("../../assets/Background\ picture.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+}
+
+.body-content {
+    background-color: white;
+    max-width: 100px;
+    margin: 50px auto;
+}
+
+footer {
+    padding: 15px;
+}
+
+footer p {
+    margin: 0;
 }

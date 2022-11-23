@@ -8,8 +8,16 @@ class Layout extends React.Component {
         <header>
             <h1>Teston-Super-Mare</h1>
         </header>
-            <Outlet />
-            <p>Footer</p>
+        <div className='body'>
+            <div className='body-content'>
+                <Outlet />
+            </div>
+        </div>
+        <footer>
+            <p>WS325813</p>
+            <p>WS325434</p>
+            <p>WS325433</p>
+        </footer>
         </>
     }
 }
