@@ -20,9 +20,6 @@ header h1 {
 .body-content {
     max-width: 1000px;
 }
-.body-content > * {
-    background-color: white;
-}
 
 footer {
     padding: 15px;
