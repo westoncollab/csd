@@ -1,0 +1,9 @@
+header {
+    /* width: 100%; */
+    border-bottom: 1px solid red;
+    text-align: center;
+}
+
+header h1 {
+    margin: 10px;
+}
