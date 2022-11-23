@@ -46,10 +46,10 @@ Create TABLE `studentTestAssignments` (
 Create TABLE `questions` (
   `questionId` INT NOT NULL,
   `question` TEXT NOT NULL,
-  `answerA` TEXT NOT NULL,
-  `answerB` TEXT NOT NULL,
-  `answerC` TEXT NOT NULL,
-  `answerD` TEXT NOT NULL,
+  `answerA` TEXT,
+  `answerB` TEXT,
+  `answerC` TEXT,
+  `answerD` TEXT,
   `subjectId` INT NOT NULL,
   `createdByLecturerId` INT NOT NULL,
   PRIMARY KEY (`questionId`)
