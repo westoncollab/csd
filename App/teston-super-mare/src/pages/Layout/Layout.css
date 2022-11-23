@@ -13,12 +13,15 @@ header h1 {
     background-attachment: fixed;
     background-size: cover;
     display: flex;
+    justify-content: center;
+    padding: 50px;
 }
 
 .body-content {
+    max-width: 1000px;
+}
+.body-content > * {
     background-color: white;
-    max-width: 100px;
-    margin: 50px auto;
 }
 
 footer {

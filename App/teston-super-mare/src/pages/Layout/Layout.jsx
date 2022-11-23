@@ -9,9 +9,7 @@ class Layout extends React.Component {
             <h1>Teston-Super-Mare</h1>
         </header>
         <div className='body'>
-            <div className='body-content'>
-                <Outlet />
-            </div>
+            <Outlet className='body-content' />
         </div>
         <footer>
             <p>WS325813</p>
