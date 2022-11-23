@@ -7,7 +7,7 @@ header h1 {
 }
 
 .body {
-    min-height: CALC(100vh - 54px); /* window height minus header height */
+    min-height: CALC(100vh - 163px);
     background-image: url("../../assets/Background\ picture.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;

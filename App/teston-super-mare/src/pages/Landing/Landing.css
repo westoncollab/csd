@@ -1,3 +1,27 @@
+.landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.landing > * {
+    margin: 50px;
+}
+
 .login-buttons {
-    
+    display: flex;
+    justify-content: space-between;
+    min-width: 275px;
+    margin-top: 0;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login-buttons > button {
+    font-weight: bold;
+}
+
+.about-text {
+    background-color: white;
+    padding: 40px;
 }
