@@ -7,6 +7,8 @@ const app = express();
 const port = 5000;
 const config = getConfig();
 
+app.use(express.json())
+
 mariadb.createConnection({
     host: config.dbHost,
     user: config.dbUsername,

@@ -20,4 +20,22 @@ module.exports = function configureEndpoints(app, db) {
             })
         })
     });
+
+
+    app.post('/subject', async(req, res) => {
+        const { subjectName } = req.body
+        if (!subjectName) {
+            res.status(400).send("Variable `subjectName` is not defined.")
+        }
+        
+        const rows = await db.query("SELECT subjectName FROM subjects")
+        const subjectNames = rows.map(row => row.subjectName)
+
+        if (!subjectNames.includes(subjectName)) {
+            await db.query("INSERT INTO subjects (subjectName) VALUES (?)", [subjectName])
+            subjectNames.push(subjectName)
+        }
+         
+        res.status(200).json(subjectNames)
+    })
 }
