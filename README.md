@@ -12,3 +12,14 @@ It should automatically reload the page after code changes and show any lint err
 
 To start up the back end, in another terminal window run `npm start` from the `server-side` directory.
 This is also where `console.log` in the server-side code outputs to.
+
+## Configuration
+
+Database credentials are not source controlled. For our back-end to be able to connect to our database
+after cloning we need to:
+
+1. Create a file called `.env` in `App/server-side` (this will be ignored per our gitignore file).
+2. Define variables called `DB_PASSWORD` and `DB_USERNAME`, each on a newline (an [example](./App/server-side/.env.example))
+3. Start as ususal.
+
+If these variables are not defined an exception will be thrown on program startup.
