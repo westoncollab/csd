@@ -12,4 +12,12 @@ module.exports = function configureEndpoints(app, db) {
             }
         });
     });
+
+    app.get('/subjects', (req, res) => {
+        db.query("SELECT subjectName FROM subjects").then(rows => {
+            res.json({
+                subjects: rows
+            })
+        })
+    });
 }
