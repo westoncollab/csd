@@ -1,0 +1,30 @@
+header {
+    text-align: center;
+}
+
+header h1 {
+    margin: 10px;
+}
+
+.body {
+    min-height: CALC(100vh - 163px);
+    background-image: url("../../assets/Background\ picture.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.body-content {
+    max-width: 1000px;
+}
+
+footer {
+    padding: 15px;
+}
+
+footer p {
+    margin: 0;
+}
