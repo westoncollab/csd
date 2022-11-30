@@ -44,7 +44,7 @@ Create TABLE `studentTestAssignments` (
 ) ENGINE = InnoDB;
 
 Create TABLE `questions` (
-  `questionId` INT NOT NULL,
+  `questionId` INT NOT NULL AUTO_INCREMENT,
   `question` TEXT NOT NULL,
   `answerA` TEXT,
   `answerB` TEXT,
@@ -56,7 +56,7 @@ Create TABLE `questions` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE `subjects` (
-  `subjectId` INT NOT NULL,
+  `subjectId` INT NOT NULL AUTO_INCREMENT,
   `subjectName` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`subjectId`)
 ) ENGINE = InnoDB;
