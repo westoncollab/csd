@@ -6,9 +6,7 @@ class UsersService {
 	}
 
     async saveNewUser (firstName, lastName, email, password) {
-        const res = await this._api.post('/users/new', { firstName, lastName, email, password });
-        console.log(res);
-		return res.data;
+        return await this._api.post('/users/new', { firstName, lastName, email, password });
     }
 }
 

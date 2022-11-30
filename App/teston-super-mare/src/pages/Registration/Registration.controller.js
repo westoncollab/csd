@@ -19,7 +19,7 @@ class RegistrationController {
         const res = await this.usersService.saveNewUser(newUser.firstName, newUser.lastName, newUser.email, hashedPass);
 
         // handle result
-        return 'success!';
+        return res;
     }
 }
 

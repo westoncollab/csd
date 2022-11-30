@@ -13,10 +13,10 @@ class Registration extends React.Component {
         super(props);
         this.registrationController = new RegistrationController();
         this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: ''
+            firstName: 'Test',
+            lastName: 'Student',
+            email: 'test@tsm.ac.uk',
+            password: 'pass'
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,8 +34,14 @@ class Registration extends React.Component {
     handleSubmit(event) {
         // prevent normal form HTTP call, handle submission with JS instead
         event.preventDefault();
+        
+        // redirect new user or show error message
         this.registrationController.saveNewUser(this.state).then(result => {
+            console.log('success! redirect to login/dashboard');
             console.log(result);
+        }).catch (err => {
+            console.log('caught response:');
+            console.log(err.response);
         });
     }
 

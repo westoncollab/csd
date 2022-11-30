@@ -23,7 +23,7 @@ mariadb.createConnection({
     console.log(`Connected to database (Connection ID: ${db.threadId})`);
 
     configureEndpoints(app, db);
-    usersRoute(app);
+    usersRoute(app, db);
 
     app.listen(port, () => {
         console.log(`Now listening on port http://localhost:${port}`);

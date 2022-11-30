@@ -1,6 +1,7 @@
 const UsersController = require('../controllers/users.controller');
-const usersController = new UsersController()
 
-module.exports = function usersRoute(app) {
+module.exports = function usersRoute(app, db) {
+    const usersController = new UsersController(db)
+
     app.post('/users/new', (req, res) => usersController.saveNewUser(req, res));
 }
