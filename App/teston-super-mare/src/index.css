@@ -16,3 +16,8 @@ button > a {
   color: unset;
   text-decoration: none;
 }
+
+.white-bg {
+  background-color: white;
+  padding: 40px;
+}
