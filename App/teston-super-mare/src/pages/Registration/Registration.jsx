@@ -5,11 +5,13 @@ import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import RegistrationController from './Registration.controller';
+import { ThemeProvider } from '@mui/material';
 
 class Registration extends React.Component {
     constructor(props) {
         super(props);
+        this.registrationController = new RegistrationController();
         this.state = {
             firstName: '',
             lastName: '',
@@ -22,7 +24,7 @@ class Registration extends React.Component {
 
     handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.value;
         const name = target.name;
         this.setState({
             [name]: value
@@ -30,8 +32,11 @@ class Registration extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log(this.state);
+        // prevent normal form HTTP call, handle submission with JS instead
         event.preventDefault();
+        this.registrationController.saveNewUser(this.state).then(result => {
+            console.log(result);
+        });
     }
 
     render() {
@@ -64,7 +69,7 @@ class Registration extends React.Component {
                     aria-describedby='emailHelper'
                     type='email'
                     required />
-                <FormHelperText id='emailHelper'>Please use your uni email.</FormHelperText>
+                <FormHelperText id='emailHelper'>Please use your university email.</FormHelperText>
             </FormControl>
             <FormControl>
                 <InputLabel htmlFor='password'>Password</InputLabel>
