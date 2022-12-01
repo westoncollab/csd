@@ -1,37 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Registration.css';
 import { FormControl, InputLabel, Input, FormHelperText, Button, Paper } from '@mui/material';
 import RegistrationController from './Registration.controller';
 
-class Registration extends React.Component {
-    constructor(props) {
-        super(props);
-        this.registrationController = new RegistrationController();
-        this.state = {
-            firstName: 'Test',
-            lastName: 'Student',
-            email: 'test@tsm.ac.uk',
-            password: 'pass'
-        }
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+const Registration = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const registrationController = new RegistrationController();
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
-    }
-
-    handleSubmit(event) {
+    function handleSubmit(event) {
         // prevent normal form HTTP call, handle submission with JS instead
         event.preventDefault();
-        
+
         // redirect new user or show error message
-        this.registrationController.saveNewUser(this.state).then(result => {
+        registrationController.saveNewUser(firstName, lastName, email, password).then(result => {
             console.log('success! redirect to login/dashboard');
             console.log(result);
         }).catch (err => {
@@ -40,16 +24,15 @@ class Registration extends React.Component {
         });
     }
 
-    render() {
-        return (<Paper className='registration'>
-            <form className='column' onSubmit={this.handleSubmit}>
-                <div className='column form-inputs'>
-                    <FormControl>
+    return (<Paper className='registration'>
+        <form className='column' onSubmit={handleSubmit}>
+            <div className='column form-inputs'>
+                <FormControl>
                     <InputLabel htmlFor='firstName'>First name</InputLabel>
                     <Input
                         id='firstName' name='firstName'
-                        value={this.state.firstName}
-                        onChange={this.handleInputChange}
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         type='input'
                         required />
                 </FormControl>
@@ -57,8 +40,8 @@ class Registration extends React.Component {
                     <InputLabel htmlFor='lastName'>Last name</InputLabel>
                     <Input
                         id='lastName' name='lastName'
-                        value={this.state.lastName}
-                        onChange={this.handleInputChange}
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         type='input'
                         required />
                 </FormControl>
@@ -66,8 +49,8 @@ class Registration extends React.Component {
                     <InputLabel htmlFor='email'>Email address</InputLabel>
                     <Input
                         id='email' name='email'
-                        value={this.state.email}
-                        onChange={this.handleInputChange}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         aria-describedby='emailHelper'
                         type='email'
                         required />
@@ -77,25 +60,24 @@ class Registration extends React.Component {
                     <InputLabel htmlFor='password'>Password</InputLabel>
                     <Input
                         id='password' name='password'
-                        value={this.state.password}
-                        onChange={this.handleInputChange}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         aria-describedby='passwordHelper'
                         type='password'
                         required />
                     <FormHelperText id='passwordHelper'>Please set a strong password.</FormHelperText>
                 </FormControl>
-                </div>
-                <div className='form-buttons'>
-                    <Button color='error' variant='outlined' href='/'>
-                        Cancel
-                    </Button>
-                    <Button color='success' variant='outlined' type='submit'>
-                        Submit
-                    </Button>
-                </div>
-            </form>
-        </Paper>);
-    }
+            </div>
+            <div className='form-buttons'>
+                <Button color='error' variant='outlined' href='/'>
+                    Cancel
+                </Button>
+                <Button color='success' variant='outlined' type='submit'>
+                    Submit
+                </Button>
+            </div>
+        </form>
+    </Paper>);
 }
 
 export default Registration

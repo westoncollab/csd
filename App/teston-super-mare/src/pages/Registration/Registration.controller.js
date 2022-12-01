@@ -1,4 +1,5 @@
 import UsersService from '../../services/users.service';
+
 const CryptoJS = require('crypto-js');
 
 class RegistrationController {
@@ -6,20 +7,18 @@ class RegistrationController {
         this.usersService = new UsersService();
     }
 
-    async saveNewUser(newUser) {
+    async saveNewUser(firstName, lastName, email, password) {
         // validate input
-        if (!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.password) {
-            return 'Erorr: missing data';
+        if (!firstName || !lastName || !email || !password) {
+            return 'Error: missing data';
         }
 
         // hash password - never use plain text password
-        const hashedPass = CryptoJS.SHA1(newUser.password).toString();
+        const hashedPass = CryptoJS.SHA1(password).toString();
         
         // send to DB
-        const res = await this.usersService.saveNewUser(newUser.firstName, newUser.lastName, newUser.email, hashedPass);
-
         // handle result
-        return res;
+        return await this.usersService.saveNewUser(firstName, lastName, email, hashedPass);
     }
 }
 
