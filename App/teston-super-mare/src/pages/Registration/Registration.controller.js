@@ -14,10 +14,10 @@ class RegistrationController {
         }
 
         // hash password - never use plain text password
-        const hashedPass = CryptoJS.SHA1(password).toString();
+        // smush the email on there, too, so identical passwords are disguised
+        const hashedPass = CryptoJS.SHA1(password + email).toString();
         
         // send to DB
-        // handle result
         return await this.usersService.saveNewUser(firstName, lastName, email, hashedPass);
     }
 }
