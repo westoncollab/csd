@@ -31,7 +31,12 @@ const Registration = () => {
         if (alert !== '') {
             setAlert('');
         }
-        setter(e.target.value);
+        const newValue = e.target.value;
+        if (newValue.length > 128) {
+            setter(newValue.substring(0, 128));
+        } else {
+            setter(newValue);
+        }
     }
 
     return (<>
