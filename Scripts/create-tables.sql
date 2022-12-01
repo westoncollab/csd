@@ -8,6 +8,8 @@ CREATE TABLE `users` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(128) NOT NULL,
   `lastName` VARCHAR(128) NOT NULL,
+  `email` VARCHAR(128) NOT NULL UNIQUE,
+  `password` VARCHAR(128) NOT NULL,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
@@ -44,19 +46,19 @@ Create TABLE `studentTestAssignments` (
 ) ENGINE = InnoDB;
 
 Create TABLE `questions` (
-  `questionId` INT NOT NULL,
-  `question` TEXT NOT NULL,
-  `answerA` TEXT,
-  `answerB` TEXT,
-  `answerC` TEXT,
-  `answerD` TEXT,
+  `questionId` INT NOT NULL AUTO_INCREMENT,
+  `question` TEXT,
+  `correctAnswer` TEXT,
+  `incorrectAnswerA` TEXT,
+  `incorrectAnswerB` TEXT,
+  `incorrectAnswerC` TEXT,
   `subjectId` INT NOT NULL,
   `createdByLecturerId` INT NOT NULL,
   PRIMARY KEY (`questionId`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `subjects` (
-  `subjectId` INT NOT NULL,
+  `subjectId` INT NOT NULL AUTO_INCREMENT,
   `subjectName` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`subjectId`)
 ) ENGINE = InnoDB;
