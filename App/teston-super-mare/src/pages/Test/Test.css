@@ -1,0 +1,18 @@
+.test {
+    width: 50vw;
+    /* Always fit page height exactly */
+    height: CALC(100vh - 143px - 100px);
+    margin: auto;
+}
+
+.test .subtitle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.questions {
+    box-shadow: 10px 10px 5px lightblue inset;
+    height: 100%;
+    overflow: scroll;
+    padding:16px;
+}
