@@ -4,6 +4,9 @@
     justify-content: space-around;
     margin: auto 0;
 }
+.registration form {
+    height: 100%;
+}
 
 .column {
     display: flex;
