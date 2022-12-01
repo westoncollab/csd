@@ -13,8 +13,8 @@ class TestManagementService extends TestonService {
         return res.data 
     }
 
-    async updateQuestion(question) {
-        const res = await this._api.put(ROUTE, { question })
+    async updateQuestion(question) { 
+        const res = await this._api.put(ROUTE, { ...question })  
         return res.data
     }
 

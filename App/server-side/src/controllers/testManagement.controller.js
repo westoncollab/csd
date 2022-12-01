@@ -25,15 +25,18 @@ class UsersController {
             incorrectAnswerA, 
             incorrectAnswerB,
             incorrectAnswerC 
-        } = req.body
+        } = req.body 
 
+        console.log(questionId)
+        console.log(question)
+        
         this.db.query(
-            `UPDATE TABLE questions
+            `UPDATE questions
             SET question = ?, correctAnswer = ?, incorrectAnswerA = ?, incorrectAnswerB = ?, incorrectAnswerC = ?
             WHERE questionId = ?
-        `, [question, correctAnswer, incorrectAnswerA, incorrectAnswerB, incorrectAnswerC, questionId])
+        `, [question ?? null, correctAnswer ?? null, incorrectAnswerA?? null, incorrectAnswerB?? null, incorrectAnswerC?? null, questionId])
             .then(() => {
-                res.status(200)
+                res.status(200).send();
             })
     }
 
@@ -42,7 +45,7 @@ class UsersController {
   
         this.db.query(`DELETE FROM questions WHERE questionId IN (?)`, [questionIds])
             .then(() => {
-                res.status(200)
+                res.status(200).send();
             })
     }
 }
