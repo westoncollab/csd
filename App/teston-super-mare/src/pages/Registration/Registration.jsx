@@ -19,7 +19,7 @@ const Registration = () => {
         registrationController.saveNewUser(firstName, lastName, email, password).then(result => {
             setAlert('success');
         }).catch (err => {
-            if (err.response.data === 'duplicate') {
+            if (err.response.data && err.response.data === 'duplicate') {
                 setAlert('duplicate');
             } else {
                 setAlert('error');
