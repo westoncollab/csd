@@ -4,10 +4,10 @@ import { FormControl, InputLabel, Input, FormHelperText, Button, Alert, AlertTit
 import RegistrationController from './Registration.controller';
 
 const Registration = () => {
-    const [firstName, setFirstName] = useState('Test');
-    const [lastName, setLastName] = useState('Student');
-    const [email, setEmail] = useState('test@test.ac.uk');
-    const [password, setPassword] = useState('pass');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [alert, setAlert] = useState('');
     const registrationController = new RegistrationController();
 
