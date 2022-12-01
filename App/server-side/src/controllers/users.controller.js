@@ -16,9 +16,10 @@ class UsersController {
             }
         }).catch(err => {
             if (err.code === 'ER_DUP_ENTRY') {
-                res.status(500).send(`User record already exists with email: ${email}`);
+                res.status(500).send(`duplicate`);
             } else {
-                res.status(500).send('There was an error');
+                console.log(err);
+                res.send(err);
             }
         })
     }

@@ -2,7 +2,7 @@
     height: 60%;
     width: 320px;
     justify-content: space-around;
-    margin: auto 0;
+    margin: 15px auto auto;
 }
 .registration form {
     height: 100%;
