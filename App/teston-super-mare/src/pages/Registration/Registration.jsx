@@ -3,13 +3,13 @@ import './Registration.css';
 import { FormControl, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
 import RegistrationController from './Registration.controller';
 
+const registrationController = new RegistrationController();
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alert, setAlert] = useState('');
-    const registrationController = new RegistrationController();
 
     function handleSubmit(event) {
         // prevent normal form HTTP call, handle submission with JS instead
