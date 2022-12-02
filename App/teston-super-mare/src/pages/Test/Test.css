@@ -3,16 +3,35 @@
     /* Always fit page height exactly */
     height: CALC(100vh - 143px - 100px);
     margin: auto;
+    display: grid;
+    grid-template-rows: minmax(50px, 70px) auto 36px;
+    grid-gap: 20px;
 }
-
-.test .subtitle {
-    margin-top: auto;
-    margin-bottom: auto;
+.test .title {
+    margin: 0;
 }
 
 .questions {
-    box-shadow: 10px 10px 5px lightblue inset;
-    height: 100%;
-    overflow: scroll;
-    padding:16px;
+    background-color: lightgrey;
+    overflow-y: scroll;
+    padding: 16px;
+    margin: 0 auto;
+    width: 80%;
+    min-width: 360px;
+}
+.questions .MuiPaper-root {
+    padding: 15px;
+  }
+.questions .MuiFormControlLabel-root {
+    height: 32px;
+}
+
+.test-footer {
+    display: grid;
+    grid-template-columns: min-content auto 64px;
+    grid-gap: 10px;
+}
+.test-footer > * {
+    margin: auto 0;
+    white-space: nowrap;
 }
