@@ -1,6 +1,6 @@
 import './Test.css';
 import { Button, FormControl, FormControlLabel, FormLabel, LinearProgress, Paper, Radio, RadioGroup, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
@@ -10,7 +10,6 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
     const [progress, setProgress] = useState(0);
 
     function getAnsweredQuestions() {
-        console.log(questionAnswers);
         return Array.from(questionAnswers.values()).reduce((total, a) => a ? total + 1 : total, 0);
     }
 
@@ -21,20 +20,16 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
     function handleAnswerChoice(e, question) {
         // store answer choice
         const answer = e.target.value;
-        console.log('question', question);
-        console.log('answer', answer);
         const newQuestionAnswers = new Map(questionAnswers.entries())
         newQuestionAnswers.set(Number(question), answer);
         setQuestionAnswers(newQuestionAnswers);
-
-        // update progress bar
-        const decimalComplete = getAnsweredQuestions() / getMaxQuestions();
-        console.log('questions answered:', getAnsweredQuestions());
-        setProgress(Math.ceil(decimalComplete * 100));
-        console.log('progress:', progress);
-        console.log('pure dec:', decimalComplete);
-        console.log('percent complete:', Math.ceil(decimalComplete * 100));
     }
+
+    useEffect(() => {
+        // update progress bar every time a question is answered
+        const decimalComplete = getAnsweredQuestions() / getMaxQuestions();
+        setProgress(Math.ceil(decimalComplete * 100));
+    }, [questionAnswers]);
 
     function onSubmitAnswers() {
         console.log(questionAnswers);
