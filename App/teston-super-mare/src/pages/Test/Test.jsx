@@ -1,5 +1,16 @@
 import './Test.css';
-import { Button, FormControl, FormControlLabel, FormLabel, LinearProgress, Paper, Radio, RadioGroup, Stack } from '@mui/material';
+import {
+    Button,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    FormLabel,
+    LinearProgress,
+    Paper,
+    Radio,
+    RadioGroup,
+    Stack
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
@@ -9,11 +20,14 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    function getAnsweredQuestions() {
+    function answeredQuestions() {
         return Array.from(questionAnswers.values()).reduce((total, a) => a ? total + 1 : total, 0);
     }
+    function correctlyAnsweredQuestions() {
+        return questions.reduce((total, { qid }) => answeredQuestionCorrectly(qid) ? total + 1 : total, 0);
+    }
 
-    function getMaxQuestions() {
+    function maxQuestions() {
         return questions.length;
     }
 
@@ -27,23 +41,32 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
 
     useEffect(() => {
         // update progress bar every time a question is answered
-        const decimalComplete = getAnsweredQuestions() / getMaxQuestions();
+        const decimalComplete = answeredQuestions() / maxQuestions();
         setProgress(Math.ceil(decimalComplete * 100));
     }, [questionAnswers]);
 
     function onSubmitAnswers() {
-        console.log(questionAnswers);
+        setHasSubmitted(true);
+
+        // create array of whether questions were answered correctly to send to DB
+    }
+
+    function answeredQuestionCorrectly(qid) {
+        const correctAnswer = questions.find(q => q.qid === qid).answer;
+        return questionAnswers.get(qid) === correctAnswer;
     }
 
     return (
         <Paper className='test'>
+            {/*heading*/}
             <Stack spacing={1}>
                 <h2 className='title'>{testName}</h2>
                 <p className='subtitle'>{subjects.join(', ')} - created by {createdByLecturer}</p>
             </Stack>
             <Stack spacing={2} className='questions'>
+                {/*test questions*/}
                 {questions.map((q, i) => <Paper key={q.qid}>
-                    <FormControl>
+                    <FormControl error={hasSubmitted && !answeredQuestionCorrectly(q.qid)} variant='standard'>
                         <FormLabel id={`question-${q.qid}`}>{i+1}) {q.question}</FormLabel>
                         <RadioGroup
                         aria-labelledby={`question-${q.qid}`}
@@ -51,26 +74,31 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
                         onChange={(e) => handleAnswerChoice(e, q.qid)}
                         >
                             {['a', 'b', 'c', 'd'].map(answerKey => q[answerKey]
-                                ? <FormControlLabel key={`${q.qid}${answerKey}`} value={answerKey} control={<Radio />} label={q[answerKey]} />
+                                ? <FormControlLabel key={`${q.qid}${answerKey}`} value={answerKey} control={
+                                    <Radio disabled={hasSubmitted} color={hasSubmitted ? 'success' : undefined} />
+                                } label={q[answerKey]} />
                                 : null
                             )}
                         </RadioGroup>
+                        {hasSubmitted ? <FormHelperText>
+                            {answeredQuestionCorrectly(q.qid) ? 'Correct!' : `Incorrect, the answer was "${q[q.answer]}"`}
+                        </FormHelperText> : null}
                     </FormControl>
                 </Paper>)}
             </Stack>
+            {/*questions done so far or test results*/}
             {!hasSubmitted
-                ? <div className='test-footer'>
-                    <p>{getAnsweredQuestions()}/{getMaxQuestions()} answered</p>
+                ? <div className='testing-footer'>
+                    <p>{answeredQuestions()}/{maxQuestions()} answered</p>
                     <LinearProgress variant='determinate' value={progress} />
-                    <Button
-                    type='submit'
-                    variant='outlined'
-                    onClick={onSubmitAnswers}
-                    disabled={(getAnsweredQuestions() !== getMaxQuestions())}>
+                    <Button variant='outlined' onClick={onSubmitAnswers} disabled={(answeredQuestions() !== maxQuestions())}>
                         Submit
                     </Button>
                 </div>
-                : <div>Finished test</div>
+                : <Stack direction='row' justifyContent='flex-end' alignItems='center' spacing={3}>
+                    <p>{correctlyAnsweredQuestions()}/{maxQuestions()} correct</p>
+                    <Button href='/' variant='outlined'>Go back</Button>
+                </Stack>
             }
         </Paper>
     )

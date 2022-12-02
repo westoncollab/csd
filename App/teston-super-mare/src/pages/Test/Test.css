@@ -26,12 +26,17 @@
     height: 32px;
 }
 
-.test-footer {
+.testing-footer {
     display: grid;
-    grid-template-columns: min-content auto 64px;
-    grid-gap: 10px;
+    grid-template-columns: min-content auto max-content;
+    grid-gap: 25px;
 }
-.test-footer > * {
+.testing-footer > * {
     margin: auto 0;
     white-space: nowrap;
+}
+
+.submitted-footer {
+    display: flex;
+    flex-direction: row;
 }
