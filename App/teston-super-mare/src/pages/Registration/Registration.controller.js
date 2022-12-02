@@ -1,6 +1,5 @@
 import UsersService from '../../services/users.service';
-
-const CryptoJS = require('crypto-js');
+import sha1 from 'crypto-js/sha1';
 
 class RegistrationController {
     constructor() {
@@ -15,7 +14,7 @@ class RegistrationController {
 
         // hash password - never use plain text password
         // smush the email on there, too, so identical passwords are disguised
-        const hashedPass = CryptoJS.SHA1(password + email).toString();
+        const hashedPass = sha1(password + email).toString();
         
         // send to DB
         return await this.usersService.saveNewUser(firstName, lastName, email, hashedPass);
