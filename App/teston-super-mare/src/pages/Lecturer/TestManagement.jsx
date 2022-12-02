@@ -3,6 +3,16 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
 import TestManagementService from '../../services/TestManagement.service'
 
@@ -14,32 +24,73 @@ const columns = [
     { field: 'incorrectAnswerC', headerName: 'Incorrect Answer 3', flex: 1, editable: true }
 ];
 
-const testService = new TestManagementService();
-const testName = 'Sample Test'
+const testService = new TestManagementService(); 
 
 export default function TestManagement() {
+    const [tests, setTests] = React.useState([]);
+    const [testSelectedId, setTestSelectedId] = React.useState();
+    const [newTestDialogOpen, setNewTestDialogOpen] = React.useState(false);
+    const [newTestName, setNewTestName] = React.useState('New Test');
+
     const [rows, setRows] = React.useState([]);
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
 
     React.useEffect(() => {
-        testService.getQuestions(testName).then(setRows)
+        testService.getTests().then(setTests)
     }, []);
 
+
     async function handleAddQuestion() {
-        const questionRow = await testService.addQuestion(testName);
-        setRows(rows => rows.concat([questionRow]));
+        if (testSelectedId) {
+            const questionRow = await testService.addQuestion(testSelectedId);
+            setRows(rows => rows.concat([questionRow]));
+        }
     }
 
-    async function handleDeleteQuestions() {  
+    async function handleDeleteQuestions() {
         testService.deleteQuestions(selectedRowIds);
         setRows(rows => rows.filter(row => !selectedRowIds.includes(row.questionId)));
     }
 
-    async function handleUpdateQuestion(questionRow) { 
-        await testService.updateQuestion(questionRow) 
+    async function handleUpdateQuestion(questionRow) {
+        await testService.updateQuestion(questionRow)
+        setRows(rows => {
+            const index = rows.findIndex(row => row.questionId === questionRow.questionId) 
+            const copy = rows.slice()
+            copy[index] = questionRow
+            return copy
+        })
+
         return questionRow
     }
-     
+
+    async function handleTestChange(event) {
+        const newTest = event.target.value
+        if (newTest) {
+            setTestSelectedId(newTest.testId)
+            const questions = await testService.getQuestions(newTest.testId)
+            setRows(questions)
+        }
+    }
+
+    function handleOpenNewTestDialog() {
+        setNewTestDialogOpen(true);
+    }
+
+    function handleCloseNewTestDialog() {
+        setNewTestDialogOpen(false);
+    }
+
+    async function handleCreateNewTestClick() {
+        const test = await testService.addTest(newTestName);  
+        setTests(tests => tests.concat([test]));
+        handleCloseNewTestDialog();
+    }
+
+    function handleNewTestNameInput(event) {
+        setNewTestName(event.target.value);
+    }
+
     return (
         <Box
             sx={{
@@ -51,15 +102,69 @@ export default function TestManagement() {
             }}
         >
             <Paper sx={{ p: 2 }}>
-                <Stack 
+                <Dialog
+                    open={newTestDialogOpen}
+                    onClose={handleCloseNewTestDialog}
+                    fullWidth
+                    maxWidth="xs"
+                >
+                    <DialogTitle>
+                        Create a New Test
+                    </DialogTitle>
+                    <DialogContent>
+                        <Stack spacing={2}>
+                            <Typography>
+                                Please enter the name of the new test.
+                            </Typography>
+                            <TextField
+                                required
+                                label="Required"
+                                value={newTestName}
+                                onChange={handleNewTestNameInput}
+                                fullWidth
+                            />
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseNewTestDialog}>Cancel</Button>
+                        <Button onClick={handleCreateNewTestClick} autoFocus>
+                            Create
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Stack
                     sx={{ width: 1200, height: 600 }}
                     spacing={2}
                 >
+                    <Stack spacing={2} direction="row" >
+                        <Button
+                            variant="contained"
+                            size="small"
+                            onClick={handleOpenNewTestDialog}
+                        >
+                            Add New
+                        </Button>
+                        <FormControl fullWidth>
+                            <InputLabel id="test-select-label">Test</InputLabel>
+                            <Select
+                                labelId="test-select-label"
+                                id="test-select"
+                                defaultValue=""
+                                label="Test"
+                                onChange={handleTestChange}
+                            >
+                                {tests.map((test) => (
+                                    <MenuItem key={test.testId} value={test}>{test.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Stack>
                     <DataGrid
                         checkboxSelection
                         autoPageSize
                         rows={rows}
-                        columns={columns}  
+                        columns={columns}
                         density="compact"
                         experimentalFeatures={{ newEditingApi: true }}
                         selectionModel={selectedRowIds}
@@ -72,19 +177,20 @@ export default function TestManagement() {
                         direction="row"
                         sx={{ justifyContent: 'space-between' }}
                     >
-                        <Button 
+                        <Button
                             variant="contained"
                             onClick={handleAddQuestion}
+                            disabled={!testSelectedId}
                         >
                             Add Question
                         </Button>
-                        <Button 
+                        <Button
                             variant="contained"
                             color="error"
                             disabled={selectedRowIds.length < 1}
                             onClick={handleDeleteQuestions}
                         >
-                            Delete Selected 
+                            Delete Selected
                         </Button>
                     </Stack>
                 </Stack>

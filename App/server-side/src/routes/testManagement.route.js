@@ -2,10 +2,12 @@ const TestManagementController = require('../controllers/testManagement.controll
 
 module.exports = function testManagementRoute(app, db) {
     const controller = new TestManagementController(db)
-    const route = '/tests/questions'
 
-    app.get(route, (req, res) => controller.getQuestions(req, res));
-    app.post(route, (req, res) => controller.addQuestion(req, res));
-    app.put(route, (req, res) => controller.updateQuestion(req, res));
-    app.delete(route, (req, res) => controller.deleteQuestions(req, res));
+    app.get('/tests', (req, res) => controller.getTests(req, res));
+    app.post('/tests', (req, res) => controller.addTest(req, res));
+
+    app.get('/tests/questions/:testId', (req, res) => controller.getQuestions(req, res));
+    app.post('/tests/questions', (req, res) => controller.addQuestion(req, res));
+    app.put('/tests/questions', (req, res) => controller.updateQuestion(req, res));
+    app.delete('/tests/questions', (req, res) => controller.deleteQuestions(req, res));
 }

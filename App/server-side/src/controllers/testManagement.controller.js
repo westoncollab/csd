@@ -3,17 +3,47 @@ class UsersController {
         this.db = db;
     }
 
+    getTests(req, res) {
+        this.db.query(`SELECT testId, name FROM tests`)
+            .then((rows) => {
+                res.json(rows);
+            });
+    }
+
+    addTest(req, res) {
+        const { testName } = req.body;
+
+        this.db.query(`INSERT INTO tests (name, createdByLecturerId) VALUES (?, 0)`, [testName])
+            .then(({ insertId }) => {
+                res.status(201).json({ testId: Number(insertId), name: testName });
+            });
+    }
+
     getQuestions(req, res) { 
-        this.db.query(`SELECT * FROM questions`)
+        const { testId } = req.params
+
+        this.db.query(`
+            SELECT 
+                questions.questionId, question, correctAnswer, incorrectAnswerA, incorrectAnswerB, incorrectAnswerC 
+            FROM 
+                questions 
+            INNER JOIN 
+                testQuestions ON testQuestions.questionId = questions.questionId 
+            WHERE 
+                testQuestions.testId = ?`, 
+            [testId])
             .then((rows) => { 
                 res.json(rows)
             });
     }
 
     addQuestion(req, res) {
+        const { testId } = req.body; 
+
         this.db.query(`INSERT INTO questions (subjectId, createdByLecturerId) VALUES (0, 0)`)
             .then(({ insertId }) => {
-                res.status(201).json({ questionId: Number(insertId) });
+                this.db.query(`INSERT INTO testQuestions (testId, questionId) VALUES (?, ?)`, [testId, insertId])
+                    .then(() => res.status(201).json({ questionId: Number(insertId) }));
             });
     }
 
@@ -27,9 +57,6 @@ class UsersController {
             incorrectAnswerC 
         } = req.body 
 
-        console.log(questionId)
-        console.log(question)
-        
         this.db.query(
             `UPDATE questions
             SET question = ?, correctAnswer = ?, incorrectAnswerA = ?, incorrectAnswerB = ?, incorrectAnswerC = ?
