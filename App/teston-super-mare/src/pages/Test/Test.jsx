@@ -56,7 +56,6 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
             questions.map(q => ({ qid: q.qid, correct: answeredQuestionCorrectly(q.qid) })), 
             userId
         ).then(response => {
-            console.log(response);
             setAlert('success');
         }).catch(() => {
             setAlert('error');
