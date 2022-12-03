@@ -12,11 +12,11 @@ class UsersController {
        VALUES (?, ?, ?, ?, ?);
        `, [firstName, lastName, 3, email, password]).then(dbResponse => {
             if (dbResponse.affectedRows && dbResponse.affectedRows === 1) {
-                res.status(200);
+                res.status(201).send('success');
             }
         }).catch(err => {
             if (err.code === 'ER_DUP_ENTRY') {
-                res.status(500).send(`duplicate`);
+                res.status(500).send('duplicate');
             } else {
                 console.log(err);
                 res.send(err);
