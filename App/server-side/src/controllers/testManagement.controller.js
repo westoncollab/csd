@@ -1,4 +1,4 @@
-class UsersController {
+class TestManagementController {
     constructor(db) {
         this.db = db;
     }
@@ -77,4 +77,4 @@ class UsersController {
     }
 }
 
-module.exports = UsersController;
+module.exports = TestManagementController;
