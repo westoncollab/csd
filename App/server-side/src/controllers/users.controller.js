@@ -10,8 +10,8 @@ class UsersController {
         this.db.query(`
        INSERT INTO \`users\` (\`firstName\`, \`lastName\`, \`roleId\`, \`email\`, \`password\`)
        VALUES (?, ?, ?, ?, ?);
-       `, [firstName, lastName, 3, email, password]).then(res => {
-            if (res.affectedRows && res.affectedRows === 1) {
+       `, [firstName, lastName, 3, email, password]).then(dbResponse => {
+            if (dbResponse.affectedRows && dbResponse.affectedRows === 1) {
                 res.status(200);
             }
         }).catch(err => {
