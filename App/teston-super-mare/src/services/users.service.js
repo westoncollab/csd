@@ -8,6 +8,10 @@ class UsersService {
     async saveNewUser (firstName, lastName, email, password) {
         return await this._api.post('/users/new', { firstName, lastName, email, password });
     }
+
+    async login(email, password) {
+        return await this._api.post('/users/login', { email, password });
+    }
 }
 
 export default UsersService;
