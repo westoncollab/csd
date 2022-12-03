@@ -48,6 +48,11 @@ class TestManagementController {
     }
 
     updateQuestion(req, res) {
+        // If the argument is 'undefined', convert it to 'null' so it can be sent to the database.
+        function undefinedGuard(arg) {
+            return arg === undefined ? null : arg 
+        }
+
         const { 
             questionId,
             question, 
@@ -60,8 +65,15 @@ class TestManagementController {
         this.db.query(
             `UPDATE questions
             SET question = ?, correctAnswer = ?, incorrectAnswerA = ?, incorrectAnswerB = ?, incorrectAnswerC = ?
-            WHERE questionId = ?
-        `, [question ?? null, correctAnswer ?? null, incorrectAnswerA?? null, incorrectAnswerB?? null, incorrectAnswerC?? null, questionId])
+            WHERE questionId = ?`, 
+            [
+                undefinedGuard(question), 
+                undefinedGuard(correctAnswer), 
+                undefinedGuard(incorrectAnswerA), 
+                undefinedGuard(incorrectAnswerB), 
+                undefinedGuard(incorrectAnswerC), 
+                questionId
+            ])
             .then(() => {
                 res.status(200).send();
             })
