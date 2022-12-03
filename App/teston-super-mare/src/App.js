@@ -11,7 +11,7 @@ function App() {
     const [user, setUser] = React.useState(null);// eslint-disable-line
  
     async function handleLogin(email, password) { // eslint-disable-line
-        const user = await users.login(email, password);
+        const user = await users.tryLogin(email, password);
         setUser(user);
     }
  
