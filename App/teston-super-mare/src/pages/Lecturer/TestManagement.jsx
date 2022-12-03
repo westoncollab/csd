@@ -125,7 +125,7 @@ export default function TestManagement() {
                 </Dialog>
 
                 <Stack
-                    sx={{ width: 1200, height: 600 }}
+                    sx={{ width: '70vw', height: '60vh' }}
                     spacing={2}
                 >
                     <Stack spacing={2} direction="row" >
