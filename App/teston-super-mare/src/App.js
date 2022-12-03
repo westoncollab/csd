@@ -7,12 +7,16 @@ import UsersService from './services/users.service';
 
 const users = new UsersService();
 
-function App() {
-    const [user, setUser] = React.useState(null);
-
-    async function handleLogin(email, password) {
-        const user = users.login(email, password);
+function App() { 
+    const [user, setUser] = React.useState(null);// eslint-disable-line
+ 
+    async function handleLogin(email, password) { // eslint-disable-line
+        const user = await users.login(email, password);
         setUser(user);
+    }
+ 
+    function handleLogout() { // eslint-disable-line
+        setUser({ isAuthenticated: false });
     }
     
   return (<BrowserRouter>

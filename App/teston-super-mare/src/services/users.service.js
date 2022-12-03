@@ -12,10 +12,13 @@ class UsersService {
     async tryLogin(email, password) {
         const res = await this._api.post('/users/login', { email, password });
         if (res.status === 400) {
-            return undefined
+            return {
+                isAuthenticated: false
+            }
         } else {
             return {
-                user: res.data
+                isAuthenticated: true,
+                ...res.data
             }
         } 
     }
