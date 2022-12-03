@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
+import Registration from './pages/Registration/Registration';
 import Test from "./pages/Test/Test";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
+        <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
             testId={-1}
