@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 
+const saltRounds = 10;
+
 class UsersController {
     constructor(db) {
         this.db = db;
@@ -9,7 +11,7 @@ class UsersController {
         const { firstName, lastName, email, password } = req.body;
 
         // Salt automatically added bcrypt.
-        const hashedPassword = bcrypt.hashSync(password);
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
         this.db.query(`
         INSERT INTO \`users\` (\`firstName\`, \`lastName\`, \`roleId\`, \`email\`, \`password\`)
@@ -36,16 +38,18 @@ class UsersController {
             firstName, lastName, roleName, password 
         FROM
             users
-        INNER JOIN ON 
+        INNER JOIN roles ON 
             users.roleId = roles.roleId
         WHERE
             email = ?
         `, [email]).then((rows) => {
-            if (rows.length === 0 || !bcrypt.compareSync(password, rows[0].hashedPassword)) {
+            if (rows.length === 0 || !bcrypt.compareSync(password, rows[0].password)) {
                 res.status(400).send('Invalid username or password.');
             } else {
                 // Update the last login time but don't wait for a response.
                 this.db.query('UPDATE users SET lastLoginTime = NOW() WHERE email = ?', [email]);
+
+                const { firstName, lastName, roleName } = rows[0];
 
                 // TODO: Persistence: Sessions? Tokens? 
                 res.status(200).json({ email, firstName, lastName, roleName });
