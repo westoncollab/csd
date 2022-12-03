@@ -8,6 +8,8 @@ CREATE TABLE `users` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(128) NOT NULL,
   `lastName` VARCHAR(128) NOT NULL,
+  `email` VARCHAR(128) NOT NULL UNIQUE,
+  `password` VARCHAR(128) NOT NULL,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
