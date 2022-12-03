@@ -1,5 +1,4 @@
 import UsersService from '../../services/users.service';
-import sha1 from 'crypto-js/sha1';
 
 class RegistrationController {
     constructor() {
@@ -12,12 +11,8 @@ class RegistrationController {
             return 'Error: missing data';
         }
 
-        // hash password - never use plain text password
-        // smush the email on there, too, so identical passwords are disguised
-        const hashedPass = sha1(password + email).toString();
-        
-        // send to DB
-        return await this.usersService.saveNewUser(firstName, lastName, email, hashedPass);
+        // send to DB - passwords hashed on the server.
+        return await this.usersService.saveNewUser(firstName, lastName, email, password);
     }
 }
 
