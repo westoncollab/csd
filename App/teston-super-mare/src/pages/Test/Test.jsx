@@ -1,6 +1,7 @@
 import './Test.css';
 import {
     Button,
+    CircularProgress,
     FormControl,
     FormControlLabel,
     FormHelperText,
@@ -12,13 +13,16 @@ import {
     Stack
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import TestController from './Test.controller';
 
-const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
+const testController = new TestController();
+const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId }) => {
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
         questions.map(q => [q.qid, null ])
     ));
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [alert, setAlert] = useState('');
 
     function answeredQuestions() {
         return Array.from(questionAnswers.values()).reduce((total, a) => a ? total + 1 : total, 0);
@@ -47,8 +51,16 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
 
     function onSubmitAnswers() {
         setHasSubmitted(true);
-
-        // create array of whether questions were answered correctly to send to DB
+        setAlert('loading');
+        testController.saveTestResults(
+            questions.map(q => ({ qid: q.qid, correct: answeredQuestionCorrectly(q.qid) })), 
+            userId
+        ).then(response => {
+            console.log(response);
+            setAlert('success');
+        }).catch(() => {
+            setAlert('error');
+        });
     }
 
     function answeredQuestionCorrectly(qid) {
@@ -81,7 +93,7 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
                             )}
                         </RadioGroup>
                         {hasSubmitted ? <FormHelperText>
-                            {answeredQuestionCorrectly(q.qid) ? 'Correct!' : `Incorrect, the answer was "${q[q.answer]}"`}
+                            {answeredQuestionCorrectly(q.qid) ? 'Correct!' : `Incorrect, the answer was: ${q[q.answer]}`}
                         </FormHelperText> : null}
                     </FormControl>
                 </Paper>)}
@@ -96,6 +108,10 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions }) => {
                     </Button>
                 </div>
                 : <Stack direction='row' justifyContent='flex-end' alignItems='center' spacing={3}>
+                    {alert === 'loading' ? <>Saving... <CircularProgress /></>
+                    : alert === 'error' ? <p>Error: results may not have been saved.</p>
+                    : alert === 'success' ? <p>Results saved successfully.</p>
+                    : null}
                     <p>{correctlyAnsweredQuestions()}/{maxQuestions()} correct</p>
                     <Button href='/' variant='outlined'>Go back</Button>
                 </Stack>

@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
 class UsersService {
     constructor() {
-		this._api = axios.create({ baseURL: 'http://localhost:5000' })
+		this._api = axios.create({ baseURL: 'http://localhost:5000' });
 	}
 
     async saveNewUser (firstName, lastName, email, password) {

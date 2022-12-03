@@ -12,7 +12,7 @@ function App() {
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
-            testId={-1}
+            testId={7}
             subjects={['General Knowledge']}
             createdByLecturer='Lenny Lecturer'
             questions={[
@@ -21,7 +21,7 @@ function App() {
               { qid: 3, question: 'Where is the Moon?', a: 'Up', b: 'Down', c: 'Left', d: 'Right', answer: 'd'},
               { qid: 4, question: 'Who is the Prime Minister?', a: 'Them', b: 'You', c: 'Me', answer: 'c'},
               { qid: 5, question: 'What question is this?', a: '6', b: '13', c: '5', answer: 'c'},
-              { qid: 6, question: 'What question was that?', a: '6', b: '13', c: '5', answer: 'c'},
+              { qid: 8, question: 'What question was that?', a: '6', b: '13', c: '5', answer: 'c'},
               // { qid: 7, question: 'How are you today?', a: 'True', b: 'False', answer: 'a'},
               // { qid: 8, question: 'Where is the Moon?', a: 'Up', b: 'Down', c: 'Left', d: 'Right', answer: 'a'},
               // { qid: 9, question: 'Who is the Prime Minister?', a: 'Them', b: 'You', c: 'Me', answer: 'b'},
@@ -29,6 +29,7 @@ function App() {
               // { qid: 11, question: 'What question was that?', a: '6', b: '13', c: '5', answer: 'c'},
               // { qid: 12, question: 'Which is the best flavour?', a: 'Orange', b: 'Rose', c: 'Marmite', answer: 'b'}
             ]}
+            userId={9}
         />} />
       </Route>
     </Routes>
