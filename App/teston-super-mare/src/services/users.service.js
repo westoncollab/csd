@@ -9,8 +9,15 @@ class UsersService {
         return await this._api.post('/users/new', { firstName, lastName, email, password });
     }
 
-    async login(email, password) {
-        return await this._api.post('/users/login', { email, password });
+    async tryLogin(email, password) {
+        const res = await this._api.post('/users/login', { email, password });
+        if (res.status === 400) {
+            return undefined
+        } else {
+            return {
+                user: res.data
+            }
+        } 
     }
 }
 
