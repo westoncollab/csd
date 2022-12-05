@@ -2,10 +2,10 @@ ALTER TABLE users
 DROP CONSTRAINT IF EXISTS fk_UserToRoleId;
 
 ALTER TABLE testResults
-DROP CONSTRAINT IF EXISTS fk_testResultToQuestionId;
+DROP CONSTRAINT IF EXISTS Name	testResults_ibfk_1;
 
 ALTER TABLE testResults
-DROP CONSTRAINT IF EXISTS fk_testResultToUserId;
+DROP CONSTRAINT IF EXISTS Name	testResults_ibfk_2;
 
 ALTER TABLE tests
 DROP CONSTRAINT IF EXISTS fk_testToCreatedByLecturerId;

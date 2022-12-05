@@ -8,11 +8,6 @@ ALTER TABLE `testQuestions`
   FOREIGN KEY (`questionId`) 
   REFERENCES `questions`(`questionId`);
 
-ALTER TABLE `testResults`
-  ADD CONSTRAINT `fk_testResultToUserId`
-  FOREIGN KEY (`studentId`)
-  REFERENCES `users`(`userId`);
-
 ALTER TABLE `tests`
   ADD CONSTRAINT `fk_testToCreatedByLecturerId`
   FOREIGN KEY (`createdByLecturerId`)
