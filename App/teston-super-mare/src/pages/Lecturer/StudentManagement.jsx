@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, Stack, Paper, Button } from '@mui/material';
+import { Stack, Button } from '@mui/material';
 import UsersService from '../../services/users.service';
 import ConfirmationDialog from '../../common/ConfirmationDialog';
 
@@ -11,14 +11,14 @@ function formatLastLoginTime(date) {
     }
     return new Date(date.value).toLocaleString();
 }
- 
+
 const columns = [
     { field: 'firstName', headerName: 'First name', flex: 1, editable: true },
     { field: 'lastName', headerName: 'Last name', flex: 1, editable: true },
     { field: 'email', headerName: 'Email', flex: 1, editable: true },
     { field: 'lastLoginTime', headerName: 'Last Login Time', valueFormatter: formatLastLoginTime, type: 'dateTime', flex: 1 },
     { field: 'isApproved', headerName: 'Is Approved', flex: 0.5, type: 'boolean', editable: true }
-]; 
+];
 
 const usersService = new UsersService();
 
@@ -57,7 +57,7 @@ export default function StudentManagement() {
 
         // Delete on the server.
         usersService.deleteStudents(selectedStudentIds);
-        
+
         // Delete on the client.
         setStudentRows(rows => rows.filter(row => !selectedStudentIds.includes(row.userId)));
     }
@@ -67,15 +67,7 @@ export default function StudentManagement() {
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                width: '100%',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
+        <>
             <ConfirmationDialog
                 open={confirmationDialogOpen}
                 onCancel={handleTerminateCancelClick}
@@ -83,41 +75,33 @@ export default function StudentManagement() {
                 title="Are you sure you want to terminate these accounts?"
                 contentText="This is a irreversible, potentially destructive action. Are you sure you wish to proceed?"
             />
-
-            <Paper sx={{ p: 2 }}>
-                <Stack
-                    sx={{ width: '70vw', height: '60vh' }}
-                    spacing={2}
+            <DataGrid
+                checkboxSelection
+                autoPageSize
+                rows={studentRows}
+                columns={columns}
+                density="compact"
+                experimentalFeatures={{ newEditingApi: true }}
+                selectionModel={selectedStudentIds}
+                onSelectionModelChange={setSelectedStudentIds}
+                getRowId={row => row.userId}
+                processRowUpdate={handleUpdateStudent}
+                onProcessRowUpdateError={(e) => console.log(e)}
+                components={{ Toolbar: GridToolbar }}
+            />
+            <Stack
+                direction="row"
+                spacing={2}
+            >
+                <Button
+                    variant="outlined"
+                    color="error"
+                    disabled={buttonsDisabled}
+                    onClick={handleTerminateClick}
                 >
-                    <DataGrid
-                        checkboxSelection
-                        autoPageSize
-                        rows={studentRows}
-                        columns={columns}
-                        density="compact"
-                        experimentalFeatures={{ newEditingApi: true }}
-                        selectionModel={selectedStudentIds}
-                        onSelectionModelChange={setSelectedStudentIds}
-                        getRowId={row => row.userId}
-                        processRowUpdate={handleUpdateStudent}
-                        onProcessRowUpdateError={(e) => console.log(e)}
-                        components={{ Toolbar: GridToolbar }}
-                    />
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                    > 
-                        <Button
-                            variant="outlined"
-                            color="error"
-                            disabled={buttonsDisabled}
-                            onClick={handleTerminateClick}
-                        >
-                            Terminate selected
-                        </Button> 
-                    </Stack>
-                </Stack>
-            </Paper>
-        </Box>
+                    Terminate selected
+                </Button>
+            </Stack>
+        </>
     )
 }

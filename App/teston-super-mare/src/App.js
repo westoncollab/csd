@@ -1,12 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
-import Layout from './pages/Layout/Layout';
-import StudentManagement from './pages/Lecturer/StudentManagement';
-import TestManagement from './pages/Lecturer/TestManagement';
-import Registration from './pages/Registration/Registration';
+import Layout from './pages/Layout/Layout'; 
 import UsersService from './services/users.service';
 import Test from "./pages/Test/Test";
+import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 
 const users = new UsersService();
 
@@ -26,9 +24,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-        <Route path='test-management' element={<TestManagement/>} />
-        <Route path='student-management' element={<StudentManagement/>} />
-        <Route path='signup' element={<Registration />} />
+        <Route path='lecturer' element={<LecturerDashboard/>} /> 
         <Route path='test' element={<Test
             testName='Programming 102'
             testId={7}
