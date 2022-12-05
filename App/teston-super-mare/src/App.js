@@ -3,6 +3,7 @@ import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration/Registration';
 import Test from "./pages/Test/Test";
+import StudentLeaderboard from './pages/StudentLeaderboard/StudentLeaderboard';
 
 function App() {
   return (<BrowserRouter>
@@ -31,6 +32,7 @@ function App() {
             ]}
             userId={9}
         />} />
+        <Route path='student/leaderboard' element={<StudentLeaderboard userId={7} />} />
       </Route>
     </Routes>
   </BrowserRouter>);
