@@ -23,12 +23,11 @@ CREATE TABLE `tests` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE `testResults` (
-  `resultId` INT NOT NULL AUTO_INCREMENT,
-  `questionId` INT NOT NULL,
-  `studentId` INT NOT NULL,
+  `questionId` INT NOT NULL REFERENCES `questions`(`questionId`),
+  `studentId` INT NOT NULL REFERENCES `users`(`userId`),
   `date` DATETIME NOT NULL,
   `correct` BOOLEAN NOT NULL,
-  PRIMARY KEY (`resultId`)
+  PRIMARY KEY (`questionId`, `studentId`, `date`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `testQuestions` (
