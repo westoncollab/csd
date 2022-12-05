@@ -2,6 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mariadb = require('mariadb');
 const usersRoute = require('./src/routes/users.route');
+const testResultsRoute = require('./src/routes/test-results.route');
 const getConfig = require('./config');
 const configureEndpoints = require('./configureEndpoints');
 const testManagementRoute = require('./src/routes/testManagement.route');
@@ -26,6 +27,7 @@ mariadb.createConnection({
     configureEndpoints(app, db);
     testManagementRoute(app, db);
     usersRoute(app, db);
+    testResultsRoute(app, db);
 
     app.listen(port, () => {
         console.log(`Now listening on port http://localhost:${port}`);
