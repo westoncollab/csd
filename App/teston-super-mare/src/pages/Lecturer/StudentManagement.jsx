@@ -2,6 +2,7 @@ import React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, Stack, Paper, Button } from '@mui/material';
 import UsersService from '../../services/users.service';
+import ConfirmationDialog from '../../common/ConfirmationDialog';
 
 function formatLastLoginTime(date) {
     if (date.value === null) {
@@ -24,6 +25,7 @@ const usersService = new UsersService();
 export default function StudentManagement() {
     const [studentRows, setStudentRows] = React.useState([]);
     const [selectedStudentIds, setSelectedStudentIds] = React.useState([]);
+    const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
 
     const buttonsDisabled = selectedStudentIds.length < 1;
 
@@ -47,11 +49,21 @@ export default function StudentManagement() {
     }
 
     function handleTerminateClick() {
+        setConfirmationDialogOpen(true);
+    }
+
+    function handleTerminateConfirmClick() {
+        setConfirmationDialogOpen(false);
+
         // Delete on the server.
         usersService.deleteStudents(selectedStudentIds);
         
         // Delete on the client.
         setStudentRows(rows => rows.filter(row => !selectedStudentIds.includes(row.userId)));
+    }
+
+    function handleTerminateCancelClick() {
+        setConfirmationDialogOpen(false);
     }
 
     return (
@@ -64,6 +76,14 @@ export default function StudentManagement() {
                 alignItems: 'center'
             }}
         >
+            <ConfirmationDialog
+                open={confirmationDialogOpen}
+                onCancel={handleTerminateCancelClick}
+                onConfirm={handleTerminateConfirmClick}
+                title="Are you sure you want to terminate these accounts?"
+                contentText="This is a irreversible, potentially destructive action. Are you sure you wish to proceed?"
+            />
+
             <Paper sx={{ p: 2 }}>
                 <Stack
                     sx={{ width: '70vw', height: '60vh' }}

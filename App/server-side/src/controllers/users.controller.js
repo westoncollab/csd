@@ -109,11 +109,13 @@ class UsersController {
 
     deleteStudents(req, res) {
         const { userIds } = req.body;
+        this.db.query(`DELETE FROM testResults WHERE studentId IN (?)`, [userIds]).then(() => {
+            this.db.query(`DELETE FROM users WHERE userId IN (?)`, [userIds])
+                .then(() => {
+                    res.status(200).send();
+                })
+        })
 
-        this.db.query(`DELETE FROM users WHERE userId IN (?)`, [userIds])
-            .then(() => {
-                res.status(200).send();
-            })
     }
 }
 
