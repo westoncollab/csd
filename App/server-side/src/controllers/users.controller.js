@@ -85,23 +85,32 @@ class UsersController {
             res.status(400).send('userId is required in the request\'s JSON body');
             return;
         }
-        
+
         // If the argument is 'undefined', convert it to 'null' so it can be sent to the database.
         function undefinedGuard(arg) {
-            return arg === undefined ? null : arg 
+            return arg === undefined ? null : arg
         }
 
         this.db.query(
             `UPDATE users
             SET firstName = ?, lastName = ?, email = ?, isApproved = ?
-            WHERE userId = ?`, 
+            WHERE userId = ?`,
             [
-                undefinedGuard(firstName), 
-                undefinedGuard(lastName), 
-                undefinedGuard(email), 
-                undefinedGuard(isApproved),  
+                undefinedGuard(firstName),
+                undefinedGuard(lastName),
+                undefinedGuard(email),
+                undefinedGuard(isApproved),
                 userId
             ])
+            .then(() => {
+                res.status(200).send();
+            })
+    }
+
+    deleteStudents(req, res) {
+        const { userIds } = req.body;
+
+        this.db.query(`DELETE FROM users WHERE userId IN (?)`, [userIds])
             .then(() => {
                 res.status(200).send();
             })

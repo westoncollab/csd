@@ -7,4 +7,5 @@ module.exports = function usersRoute(app, db) {
     app.post('/users/login', (req, res) => usersController.login(req, res));
     app.get('/users/students', (req, res) => usersController.getStudents(req, res));
     app.put('/users/students', (req, res) => usersController.updateStudent(req, res));
+    app.delete('/users/students', (req, res) => usersController.deleteStudents(req, res));
 }

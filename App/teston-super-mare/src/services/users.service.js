@@ -32,6 +32,11 @@ class UsersService {
         const res = await this._api.put('/users/students', { ...student })  
         return res.data
     }
+
+    async deleteStudents(userIds) {
+        const res = await this._api.delete('/users/students', { data: { userIds } });
+        return res.data    
+    }
 }
 
 export default UsersService;

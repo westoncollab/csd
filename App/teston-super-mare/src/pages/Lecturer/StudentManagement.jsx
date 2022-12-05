@@ -46,6 +46,14 @@ export default function StudentManagement() {
         return studentRow;
     }
 
+    function handleTerminateClick() {
+        // Delete on the server.
+        usersService.deleteStudents(selectedStudentIds);
+        
+        // Delete on the client.
+        setStudentRows(rows => rows.filter(row => !selectedStudentIds.includes(row.userId)));
+    }
+
     return (
         <Box
             sx={{
@@ -83,6 +91,7 @@ export default function StudentManagement() {
                             variant="outlined"
                             color="error"
                             disabled={buttonsDisabled}
+                            onClick={handleTerminateClick}
                         >
                             Terminate selected
                         </Button> 
