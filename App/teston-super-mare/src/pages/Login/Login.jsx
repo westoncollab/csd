@@ -1,6 +1,5 @@
 import React from 'react';
 import './Login.css';
-import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
@@ -24,6 +23,12 @@ class Login extends React.Component {
             placeholder="Password"
           />
         </div>
+        <Link to="/">
+          <button className="button cancel">
+            <span className="button_text">Cancel</span>
+            <i className="button__icon fas fa-chevron-right" />
+          </button>
+        </Link>
         <button className="button login__submit">
           <span className="button__text">Log In</span>
           <i className="button__icon fas fa-chevron-right" />
