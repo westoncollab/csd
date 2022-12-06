@@ -46,11 +46,11 @@ Create TABLE `studentTestAssignments` (
 
 Create TABLE `questions` (
   `questionId` INT NOT NULL AUTO_INCREMENT,
-  `question` TEXT NOT NULL,
-  `answerA` TEXT,
-  `answerB` TEXT,
-  `answerC` TEXT,
-  `answerD` TEXT,
+  `question` TEXT,
+  `correctAnswer` TEXT,
+  `incorrectAnswerA` TEXT,
+  `incorrectAnswerB` TEXT,
+  `incorrectAnswerC` TEXT,
   `subjectId` INT NOT NULL,
   `createdByLecturerId` INT NOT NULL,
   PRIMARY KEY (`questionId`)

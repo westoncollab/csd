@@ -5,6 +5,7 @@ const usersRoute = require('./src/routes/users.route');
 const testResultsRoute = require('./src/routes/test-results.route');
 const getConfig = require('./config');
 const configureEndpoints = require('./configureEndpoints');
+const testManagementRoute = require('./src/routes/testManagement.route');
 
 const app = express();
 const port = 5000;
@@ -24,6 +25,7 @@ mariadb.createConnection({
     console.log(`Connected to database (Connection ID: ${db.threadId})`);
 
     configureEndpoints(app, db);
+    testManagementRoute(app, db);
     usersRoute(app, db);
     testResultsRoute(app, db);
 
