@@ -23,6 +23,17 @@ class UsersController {
             }
         })
     }
+
+    getTotalStudents (req, res) {
+        this.db.query(`
+        SELECT COUNT(\`userId\`) AS total FROM \`users\` WHERE \`roleId\` = 3;
+        `).then(dbResponse => {
+            res.status(200).send({ total: Number(dbResponse[0].total) });
+        }).catch(err => {
+            console.log(err);
+            res.send(err);
+        })
+    }
 }
 
 module.exports = UsersController;
