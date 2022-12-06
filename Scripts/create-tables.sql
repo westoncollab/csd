@@ -10,6 +10,7 @@ CREATE TABLE `users` (
   `lastName` VARCHAR(128) NOT NULL,
   `email` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
+  `lastLoginTime` DATETIME,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
