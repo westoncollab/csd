@@ -13,9 +13,9 @@ import {
     Stack
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import TestController from './Test.controller';
+import TestService from '../../services/test.service';
 
-const testController = new TestController();
+const testService = new TestService();
 const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId }) => {
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
         questions.map(q => [q.qid, null ])
@@ -52,9 +52,10 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
     function onSubmitAnswers() {
         setHasSubmitted(true);
         setAlert('loading');
-        testController.saveTestResults(
+        testService.saveTestResults(
             questions.map(q => ({ qid: q.qid, correct: answeredQuestionCorrectly(q.qid) })), 
-            userId
+            userId,
+            testId
         ).then(response => {
             setAlert('success');
         }).catch(() => {

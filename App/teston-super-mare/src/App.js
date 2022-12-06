@@ -13,7 +13,7 @@ function App() {
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
-            testId={7}
+            testId={1}
             subjects={['General Knowledge']}
             createdByLecturer='Lenny Lecturer'
             questions={[
@@ -30,9 +30,9 @@ function App() {
               // { qid: 11, question: 'What question was that?', a: '6', b: '13', c: '5', answer: 'c'},
               // { qid: 12, question: 'Which is the best flavour?', a: 'Orange', b: 'Rose', c: 'Marmite', answer: 'b'}
             ]}
-            userId={9}
+            userId={1}
         />} />
-        <Route path='student/leaderboard' element={<StudentLeaderboard userId={7} />} />
+        <Route path='student/leaderboard' element={<StudentLeaderboard userId={12} />} />
       </Route>
     </Routes>
   </BrowserRouter>);

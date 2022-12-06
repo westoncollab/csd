@@ -25,6 +25,7 @@ CREATE TABLE `testResults` (
   `questionId` INT NOT NULL REFERENCES `questions`(`questionId`),
   `studentId` INT NOT NULL REFERENCES `users`(`userId`),
   `date` DATETIME NOT NULL,
+  `answeredInTestId` INT NOT NULL REFERENCES `tests`(`testId`),
   `correct` BOOLEAN NOT NULL,
   PRIMARY KEY (`questionId`, `studentId`, `date`)
 ) ENGINE = InnoDB;
