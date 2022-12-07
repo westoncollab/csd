@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
 import Login from './pages/Login/Login';
 
 function App() {
-=======
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
@@ -29,14 +28,11 @@ function App() {
         setUser({ isAuthenticated: false });
     }
     
->>>>>>> main
   return (<BrowserRouter>
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-<<<<<<< HEAD
         <Route path="login" element={<Login />} /> 
-=======
         <Route path='test-management' element={<TestManagement/>} />
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
@@ -60,7 +56,6 @@ function App() {
             ]}
             userId={9}
         />} />
->>>>>>> main
       </Route>
     </Routes>
   </BrowserRouter>);
