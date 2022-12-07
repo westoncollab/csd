@@ -15,10 +15,9 @@ const StudentLeaderboard = ({ userId }) => {
 
     useEffect(() => {
         const getData = async () => {
-            const newStudents = await testService.getStudentLeaderboard(topNum);
+            const { studentLeaderboard, totalStudents } = await testService.getStudentLeaderboard(topNum);
             const userStats = testService.getStudentResultStats(userId);
-            const totalStudents = await usersService.getTotalStudents();
-            return { newStudents, userStats, totalStudents };
+            return { newStudents: studentLeaderboard, userStats, totalStudents };
         }
         getData().then(({ newStudents, userStats, totalStudents }) => {
             setStudents(newStudents);
@@ -28,10 +27,12 @@ const StudentLeaderboard = ({ userId }) => {
     }, []);
 
     function ordinalSuffix(num) {
-        switch(num) {
-            case 1: return 'st';
-            case 2: return 'nd';
-            case 3: return 'rd';
+        const digitArr = String(num).split('');
+        const lastDigit = digitArr[digitArr.length - 1];
+        switch(lastDigit) {
+            case '1': return 'st';
+            case '2': return 'nd';
+            case '3': return 'rd';
             default: return 'th';
         }
     }
@@ -39,7 +40,7 @@ const StudentLeaderboard = ({ userId }) => {
     return (<>
         <Button variant='contained' href='/' className='back-button'>Back to dashboard</Button>
         <Paper className='leaderboard'>
-            <h2>Top {topNum} Students</h2>
+            <h2>Top {Math.min(topNum, totalStudents)} Students</h2>
             <List>
                 <>{students.map((str, i) =>
                     <ListItem key={i} className={str.uid === userId ? 'highlighted-student' : ''}>

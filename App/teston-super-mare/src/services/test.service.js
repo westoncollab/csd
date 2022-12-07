@@ -10,14 +10,8 @@ class TestService {
     }
 
     async getStudentLeaderboard (numToGet) {
-        return await this._api.get(`/results/get-leaderboard?num=${numToGet}`);
-        // return [
-        //     { place: 1, uid: 23, name: 'Stu' },
-        //     { place: 2, uid: 12, name: 'May' },
-        //     { place: 3, uid: 24, name: 'Bob' },
-        //     { place: 4, uid: 27,name: 'Frd' },
-        //     { place: 5, uid: 2,name: 'Sue' }
-        // ];
+        const res = await this._api.get(`/results/get-leaderboard?num=${numToGet}`);
+        return res.data;
     }
 
     getStudentResultStats (userId) {
