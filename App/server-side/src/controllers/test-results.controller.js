@@ -108,24 +108,22 @@ class TestResultsController {
             // get all students' test results
             this.db.query(`
                 SELECT
-                    t.\`answeredInTestId\` AS testId,
-                    t.\`studentId\`,
-                    COUNT(t.\`correct\`) AS numCorrect
-                FROM \`testResults\` AS t
-                WHERE \`correct\` = 1
-                INNER JOIN (
-                    SELECT \`studentId\`, MAX(COUNT(\`correct\`)) AS maxCorrect
+                    \`answeredInTestId\` AS testId,
+                    \`studentId\`,
+                    MAX(t1.countCorrect) AS numCorrect
+                FROM (
+                    SELECT
+                        \`answeredInTestId\`,
+                        \`studentId\`,
+                        \`date\`,
+                        COUNT(\`correct\`) AS countCorrect
                     FROM \`testResults\`
                     WHERE \`correct\` = 1
-                    GROUP BY \`answeredInTestId\`, \`studentId\`
-                ) AS t1 ON
-                    t.\`answeredInTestId\` = t1.\`answeredInTestId\`
-                    AND t.\`studentId\` = t1.\`studentId\`
-                    AND t.numCorrect = t1.maxCorrect
+                    GROUP BY \`answeredInTestId\`, \`studentId\`, \`date\`
+                ) t1
                 GROUP BY \`answeredInTestId\`, \`studentId\`;
             `)
         ]);
-        console.log(testResults);
         
         const studentAverages = this._calcStudentAveragesIncIncompleteTests(allTests, students, testResults);
         const { studentLeaderboard, studentRank } = this._rankStudentsByAverage(numToGet, studentAverages, students, studentId);
