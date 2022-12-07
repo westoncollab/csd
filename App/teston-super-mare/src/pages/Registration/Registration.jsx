@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Registration.css';
-import { FormControl, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
+import { FormControl, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper, Select, MenuItem } from '@mui/material';
 import RegistrationController from './Registration.controller';
 
 const registrationController = new RegistrationController();
@@ -10,6 +10,7 @@ const Registration = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alert, setAlert] = useState('');
+    const [subject, setSubject] = useState('');
 
     function handleSubmit(event) {
         // prevent normal form HTTP call, handle submission with JS instead
@@ -76,6 +77,20 @@ const Registration = () => {
                             onChange={(e) => handleInput(e, setLastName)}
                             type='input'
                             required />
+                    </FormControl>
+                    <FormControl fullWidth>
+                        <InputLabel id='subject-select-label'>Subject</InputLabel>
+                        <Select required
+                            labelId='subject-select-label'
+                            id='subject-select'
+                            value={subject}
+                            label='Subject'
+                            onChange={(e) => setSubject(e.target.value)}
+                        >
+                            <MenuItem value={1}>Maths</MenuItem>
+                            <MenuItem value={2}>History</MenuItem>
+                            <MenuItem value={3}>Art</MenuItem>
+                        </Select>
                     </FormControl>
                     <FormControl>
                         <InputLabel htmlFor='email'>Email address</InputLabel>
