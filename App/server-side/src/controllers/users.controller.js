@@ -56,6 +56,67 @@ class UsersController {
             }
         })
     }
+
+    getStudents(_req, res) {
+        this.db.query(`
+        SELECT
+        userId, firstName, lastName, email, isApproved, lastLoginTime
+        FROM 
+            users
+        INNER JOIN roles ON
+            users.roleId = roles.roleId
+        WHERE
+            roles.roleName = "Student"
+        `).then((rows) => {
+            if (rows.length === 0) {
+                res.json([]);
+            } else {
+                res.json(rows);
+            }
+        }).catch(error => {
+            console.log(error);
+            res.status(500).send();
+        });
+    }
+
+    updateStudent(req, res) {
+        const { userId, firstName, lastName, email, isApproved } = req.body;
+        if (!userId) {
+            res.status(400).send('userId is required in the request\'s JSON body');
+            return;
+        }
+
+        // If the argument is 'undefined', convert it to 'null' so it can be sent to the database.
+        function undefinedGuard(arg) {
+            return arg === undefined ? null : arg
+        }
+
+        this.db.query(
+            `UPDATE users
+            SET firstName = ?, lastName = ?, email = ?, isApproved = ?
+            WHERE userId = ?`,
+            [
+                undefinedGuard(firstName),
+                undefinedGuard(lastName),
+                undefinedGuard(email),
+                undefinedGuard(isApproved),
+                userId
+            ])
+            .then(() => {
+                res.status(200).send();
+            })
+    }
+
+    deleteStudents(req, res) {
+        const { userIds } = req.body;
+        this.db.query(`DELETE FROM testResults WHERE studentId IN (?)`, [userIds]).then(() => {
+            this.db.query(`DELETE FROM users WHERE userId IN (?)`, [userIds])
+                .then(() => {
+                    res.status(200).send();
+                })
+        })
+
+    }
 }
 
 module.exports = UsersController;
