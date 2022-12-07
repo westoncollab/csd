@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing/Landing';
+import Landing from './pages/Landing';
 import Layout from './pages/Layout/Layout';
 import TestManagement from './pages/Lecturer/TestManagement';
-import Registration from './pages/Registration/Registration';
+import Registration from './pages/Registration';
 import UsersService from './services/users.service';
-import Test from "./pages/Test/Test";
+import Test from "./pages/Test";
 import Login from './pages/Login/Login';
 
 const users = new UsersService();

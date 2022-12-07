@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormControl, Stack, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
-import UsersService from '../../services/users.service';
+import UsersService from '../services/users.service';
 
 const usersService = new UsersService();
 const Registration = () => {
