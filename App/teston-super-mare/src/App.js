@@ -16,6 +16,8 @@ function App() {
     async function handleLogin(email, password) { // eslint-disable-line
         const user = await users.tryLogin(email, password);
         setUser(user);
+        
+        return user;
     }
  
     function handleLogout() { // eslint-disable-line
@@ -27,7 +29,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
         <Route path='lecturer' element={<LecturerDashboard/>} />  
-        <Route path="login" element={<Login />} /> 
+        <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
