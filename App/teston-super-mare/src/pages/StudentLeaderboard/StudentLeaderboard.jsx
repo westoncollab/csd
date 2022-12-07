@@ -6,7 +6,6 @@ import TestService from '../../services/test.service';
 import UsersService from '../../services/users.service';
 
 const testService = new TestService();
-const usersService = new UsersService();
 const StudentLeaderboard = ({ userId }) => {
     const topNum = 5;
     const [students, setStudents] = useState([{ place: 0, uid: 0, name: '' }]);
@@ -14,13 +13,8 @@ const StudentLeaderboard = ({ userId }) => {
     const [totalStudents, setTotalStudents] = useState(98);
 
     useEffect(() => {
-        const getData = async () => {
-            const { studentLeaderboard, totalStudents } = await testService.getStudentLeaderboard(topNum);
-            const userStats = testService.getStudentResultStats(userId);
-            return { newStudents: studentLeaderboard, userStats, totalStudents };
-        }
-        getData().then(({ newStudents, userStats, totalStudents }) => {
-            setStudents(newStudents);
+        testService.getStudentLeaderboard(topNum, userId).then(({ studentLeaderboard, userStats, totalStudents }) => {
+            setStudents(studentLeaderboard);
             setUserStats(userStats);
             setTotalStudents(totalStudents);
         });
@@ -35,6 +29,11 @@ const StudentLeaderboard = ({ userId }) => {
             case '3': return 'rd';
             default: return 'th';
         }
+    }
+
+    function jointPlace() {
+        const countStudentsWithRank = students.filter(stu => stu.place === userStats.rank).length;
+        return countStudentsWithRank > 1 ? 'joint ' : '';
     }
 
     return (<>
@@ -55,8 +54,8 @@ const StudentLeaderboard = ({ userId }) => {
                 )}</>
             </List>
             <p>
-                You are {userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} with
-                an average of {userStats.average}% from {userStats.total} tests
+                You are {jointPlace()}{userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} with
+                an average of {Math.round(userStats.average * 100)}% from {userStats.total} tests
                 {userStats.rank < topNum ? ', congratulations!' : '.'}
             </p>
         </Paper>

@@ -9,13 +9,9 @@ class TestService {
         return await this._api.post('/tests/save-results', { results, studentId, testId });
     }
 
-    async getStudentLeaderboard (numToGet) {
-        const res = await this._api.get(`/results/get-leaderboard?num=${numToGet}`);
+    async getStudentLeaderboard (numToGet, userId) {
+        const res = await this._api.get(`/results/leaderboard?numToGet=${numToGet}&studentId=${userId}`);
         return res.data;
-    }
-
-    getStudentResultStats (userId) {
-        return { rank: 2, average: 22, total: 13 };
     }
 }
 

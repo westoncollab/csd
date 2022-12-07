@@ -5,5 +5,5 @@ module.exports = function testResultsRoute(app, db) {
 
     app.post('/tests/save-results', (req, res) => testResultsController.saveTestResults(req, res));
 
-    app.get('/results/get-leaderboard', (req, res) => testResultsController.getStudentLeaderboard(req, res));
+    app.get('/results/leaderboard', (req, res) => testResultsController.getStudentLeaderboard(req, res));
 }
