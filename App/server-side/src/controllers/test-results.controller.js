@@ -87,7 +87,6 @@ class TestResultsController {
         const numToGet = Number(req.query.numToGet);
         const studentId = Number(req.query.studentId);
 
-        // get data from DB - not sure if these would be more efficient if they used subqueries
         const [allTests, students, testResults] = await Promise.all([
             // get all tests
             this.db.query(`
@@ -109,14 +108,24 @@ class TestResultsController {
             // get all students' test results
             this.db.query(`
                 SELECT
-                    \`answeredInTestId\` AS testId,
-                    \`studentId\`,
-                    COUNT(\`correct\`) AS numCorrect
-                FROM \`testResults\`
+                    t.\`answeredInTestId\` AS testId,
+                    t.\`studentId\`,
+                    COUNT(t.\`correct\`) AS numCorrect
+                FROM \`testResults\` AS t
                 WHERE \`correct\` = 1
+                INNER JOIN (
+                    SELECT \`studentId\`, MAX(COUNT(\`correct\`)) AS maxCorrect
+                    FROM \`testResults\`
+                    WHERE \`correct\` = 1
+                    GROUP BY \`answeredInTestId\`, \`studentId\`
+                ) AS t1 ON
+                    t.\`answeredInTestId\` = t1.\`answeredInTestId\`
+                    AND t.\`studentId\` = t1.\`studentId\`
+                    AND t.numCorrect = t1.maxCorrect
                 GROUP BY \`answeredInTestId\`, \`studentId\`;
             `)
         ]);
+        console.log(testResults);
         
         const studentAverages = this._calcStudentAveragesIncIncompleteTests(allTests, students, testResults);
         const { studentLeaderboard, studentRank } = this._rankStudentsByAverage(numToGet, studentAverages, students, studentId);
