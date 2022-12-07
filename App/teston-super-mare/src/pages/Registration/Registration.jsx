@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import './Registration.css';
-import { FormControl, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
-import RegistrationController from './Registration.controller';
+import { FormControl, Stack, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
+import UsersService from '../../services/users.service';
 
-const registrationController = new RegistrationController();
+const usersService = new UsersService();
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -15,16 +14,18 @@ const Registration = () => {
         // prevent normal form HTTP call, handle submission with JS instead
         event.preventDefault();
 
-        // redirect new user or show error message
-        registrationController.saveNewUser(firstName, lastName, email, password).then(result => {
-            setAlert('success');
-        }).catch (err => {
-            if (err.response.data && err.response.data === 'duplicate') {
-                setAlert('duplicate');
-            } else {
-                setAlert('error');
-            }
-        });
+        if (firstName || lastName || email || password) {
+            // redirect new user or show error message
+            usersService.saveNewUser(firstName, lastName, email, password).then(result => {
+                setAlert('success');
+            }).catch (err => {
+                if (err.response.data && err.response.data === 'duplicate') {
+                    setAlert('duplicate');
+                } else {
+                    setAlert('error');
+                }
+            });
+        }
     }
 
     function handleInput(e, setter) {
@@ -56,59 +57,61 @@ const Registration = () => {
                 Please try again later.
             </Alert>
         : null}
-        <Paper className='registration'>
-            <form className='column' onSubmit={handleSubmit}>
-                <div className='column form-inputs'>
-                    <FormControl>
-                        <InputLabel htmlFor='firstName'>First name</InputLabel>
-                        <Input
-                            id='firstName' name='firstName'
-                            value={firstName}
-                            onChange={(e) => handleInput(e, setFirstName)}
-                            type='input'
-                            required />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor='lastName'>Last name</InputLabel>
-                        <Input
-                            id='lastName' name='lastName'
-                            value={lastName}
-                            onChange={(e) => handleInput(e, setLastName)}
-                            type='input'
-                            required />
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor='email'>Email address</InputLabel>
-                        <Input
-                            id='email' name='email'
-                            value={email}
-                            onChange={(e) => handleInput(e, setEmail)}
-                            aria-describedby='emailHelper'
-                            type='email'
-                            required />
-                        <FormHelperText id='emailHelper'>Please use your university email.</FormHelperText>
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor='password'>Password</InputLabel>
-                        <Input
-                            id='password' name='password'
-                            value={password}
-                            onChange={(e) => handleInput(e, setPassword)}
-                            aria-describedby='passwordHelper'
-                            type='password'
-                            required />
-                        <FormHelperText id='passwordHelper'>Please set a strong password.</FormHelperText>
-                    </FormControl>
-                </div>
-                <div className='form-buttons'>
+        <Paper sx={{
+            p: 5,
+            height: 0.7,
+            width: 320
+        }}>
+            <Stack justifyContent='space-around' sx={{ height: 1 }}>
+                <FormControl>
+                    <InputLabel htmlFor='firstName'>First name</InputLabel>
+                    <Input
+                        id='firstName' name='firstName'
+                        value={firstName}
+                        onChange={(e) => handleInput(e, setFirstName)}
+                        type='input'
+                        required />
+                </FormControl>
+                <FormControl>
+                    <InputLabel htmlFor='lastName'>Last name</InputLabel>
+                    <Input
+                        id='lastName' name='lastName'
+                        value={lastName}
+                        onChange={(e) => handleInput(e, setLastName)}
+                        type='input'
+                        required />
+                </FormControl>
+                <FormControl>
+                    <InputLabel htmlFor='email'>Email address</InputLabel>
+                    <Input
+                        id='email' name='email'
+                        value={email}
+                        onChange={(e) => handleInput(e, setEmail)}
+                        aria-describedby='emailHelper'
+                        type='email'
+                        required />
+                    <FormHelperText id='emailHelper'>Please use your university email.</FormHelperText>
+                </FormControl>
+                <FormControl>
+                    <InputLabel htmlFor='password'>Password</InputLabel>
+                    <Input
+                        id='password' name='password'
+                        value={password}
+                        onChange={(e) => handleInput(e, setPassword)}
+                        aria-describedby='passwordHelper'
+                        type='password'
+                        required />
+                    <FormHelperText id='passwordHelper'>Please set a strong password.</FormHelperText>
+                </FormControl>
+                <Stack direction='row' justifyContent='space-evenly'>
                     <Button color='error' variant='outlined' href='/'>
                         Cancel
                     </Button>
-                    <Button color='success' variant='outlined' type='submit'>
+                    <Button color='success' variant='outlined' onClick={handleSubmit}>
                         Submit
                     </Button>
-                </div>
-            </form>
+                </Stack>
+            </Stack>
         </Paper>
     </>);
 }
