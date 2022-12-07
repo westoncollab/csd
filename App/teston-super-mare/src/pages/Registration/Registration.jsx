@@ -10,13 +10,9 @@ const Registration = () => {
     const [password, setPassword] = useState('');
     const [alert, setAlert] = useState('');
 
-    function handleSubmit(event) {
-        // prevent normal form HTTP call, handle submission with JS instead
-        event.preventDefault();
-
+    function handleSubmit() {
         if (firstName || lastName || email || password) {
-            // redirect new user or show error message
-            usersService.saveNewUser(firstName, lastName, email, password).then(result => {
+            usersService.saveNewUser(firstName, lastName, email, password).then(() => {
                 setAlert('success');
             }).catch (err => {
                 if (err.response.data && err.response.data === 'duplicate') {
