@@ -6,6 +6,7 @@ import Registration from './pages/Registration/Registration';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import UsersService from './services/users.service';
 import Test from "./pages/Test/Test";
+import Login from './pages/Login/Login';
 
 const users = new UsersService();
 
@@ -26,6 +27,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
         <Route path='lecturer' element={<LecturerDashboard/>} />  
+        <Route path="login" element={<Login />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
