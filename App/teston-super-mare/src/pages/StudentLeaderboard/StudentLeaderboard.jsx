@@ -3,11 +3,10 @@ import { Button, List, ListItem, ListItemIcon, ListItemText, Paper } from '@mui/
 import { EmojiEvents, WorkspacePremium } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import TestService from '../../services/test.service';
-import UsersService from '../../services/users.service';
 
 const testService = new TestService();
 const StudentLeaderboard = ({ userId }) => {
-    const topNum = 5;
+    const topNum = 10;
     const [students, setStudents] = useState([{ place: 0, uid: 0, name: '' }]);
     const [userStats, setUserStats] = useState({ rank: 0, average: 0, total: 0 });
     const [totalStudents, setTotalStudents] = useState(98);
