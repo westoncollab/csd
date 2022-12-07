@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
-import Login from './pages/Login/Login';
 
 function App() {
 
@@ -13,6 +12,7 @@ import TestManagement from './pages/Lecturer/TestManagement';
 import Registration from './pages/Registration/Registration';
 import UsersService from './services/users.service';
 import Test from "./pages/Test/Test";
+import Login from './pages/Login/Login';
 
 const users = new UsersService();
 
