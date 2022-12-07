@@ -55,7 +55,7 @@ const StudentLeaderboard = ({ userId }) => {
             </List>
             <p>
                 You are {jointPlace()}{userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} with
-                an average of {Math.round(userStats.average * 100)}% from {userStats.total} tests
+                an average of {Math.round(userStats.average * 100)}% from {userStats.total} test{userStats.total === 1 ? '' : 's'}
                 {userStats.rank < topNum ? ', congratulations!' : '.'}
             </p>
         </Paper>
