@@ -26,19 +26,35 @@ class TestResultsController {
     async getStudentLeaderboard (req, res) {
         const { num } = req.query;
 
-        // const [totalTests, students, testResults] = Promise.all([
-        //     this.db.query(`SELECT COUNT(\`testId\`) AS total FROM \`tests\`;`),
-        //     this.db.query(`
-        //         SELECT
-        //             \`userId\`,
-        //             \`firstName\` + " " + \`lastName\` AS name
-        //         FROM \`users\`
-        //         WHERE \`roleId\` = 3;
-        //     `),
-        //     this.db.query(`
-        //         SELECT
-        //     `)
-        // ]);
+        const [allTests, students, testResults] = Promise.all([
+            // get all tests
+            this.db.query(`SELECT \`testId\` FROM \`tests\`;`),
+            // get all students
+            this.db.query(`
+                SELECT
+                    \`userId\`,
+                    \`firstName\` + " " + \`lastName\` AS name
+                FROM \`users\`
+                WHERE \`roleId\` = 3;
+            `),
+            // get all students' test results
+            this.db.query(`
+                SELECT
+                    \`answeredInTest\` AS testId,
+                    \`studentId\`,
+                    \`percentage\`
+                FROM \`testResults\`
+                INNER JOIN (
+                    SELECT
+                        \`answeredInTest\` AS testIdCorrect,
+                        COUNT(\`correct\`) AS numCorrect
+                    FROM \`testResults\`
+                    GROUP BY i.ID) AS t1 ON t1.\`answeredInTest\` = t.End_Date
+                )
+                INNER JOIN # count inccorect answers
+                ;
+            `)
+        ]);
 
         res.status(200).send([]);
     }

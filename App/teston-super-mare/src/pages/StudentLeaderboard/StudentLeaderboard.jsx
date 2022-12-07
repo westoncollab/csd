@@ -9,13 +9,7 @@ const testService = new TestService();
 const usersService = new UsersService();
 const StudentLeaderboard = ({ userId }) => {
     const topNum = 5;
-    const [students, setStudents] = useState([
-        { place: 1, uid: 23, name: 'Stu' },
-        { place: 2, uid: 12, name: 'May' },
-        { place: 3, uid: 24, name: 'Bob' },
-        { place: 4, uid: 27,name: 'Frd' },
-        { place: 5, uid: 2,name: 'Sue' }
-    ]);
+    const [students, setStudents] = useState([{ place: 0, uid: 0, name: '' }]);
     const [userStats, setUserStats] = useState({ rank: 0, average: 0, total: 0 });
     const [totalStudents, setTotalStudents] = useState(98);
 
