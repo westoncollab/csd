@@ -5,14 +5,20 @@ class RegistrationController {
         this.usersService = new UsersService();
     }
 
-    async saveNewUser(firstName, lastName, email, password) {
+    async saveNewUser(firstName, lastName, subjectId, email, password) {
         // validate input
-        if (!firstName || !lastName || !email || !password) {
+        if (!firstName || !lastName || !subjectId || !email || !password) {
             return 'Error: missing data';
         }
 
         // send to DB - passwords hashed on the server.
-        return await this.usersService.saveNewUser(firstName, lastName, email, password);
+        return await this.usersService.saveNewUser(
+            firstName,
+            lastName,
+            subjectId,
+            email,
+            password
+        );
     }
 }
 

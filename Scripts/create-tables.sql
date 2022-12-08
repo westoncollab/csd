@@ -8,6 +8,7 @@ CREATE TABLE `users` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(128) NOT NULL,
   `lastName` VARCHAR(128) NOT NULL,
+  `subjectId` INT NOT NULL REFERENCES `subjects`(`subjectId`),
   `email` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
   `lastLoginTime` DATETIME,
