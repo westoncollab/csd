@@ -19,8 +19,8 @@ class TestManagementService extends TestonService {
         return res.data
     }
     
-    async addQuestion(testId) {
-        const res = await this._api.post(QUESTIONS_ROUTE, { testId });
+    async addQuestion(testId, question = {}) {
+        const res = await this._api.post(QUESTIONS_ROUTE, { testId, ...question });
         return res.data 
     }
 
