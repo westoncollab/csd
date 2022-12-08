@@ -28,7 +28,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-        <Route path='lecturer' element={<LecturerDashboard/>} />  
+        <Route path='lecturer' element={<LecturerDashboard user={user} />} />  
         <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
