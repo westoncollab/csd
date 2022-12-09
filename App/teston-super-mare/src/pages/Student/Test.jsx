@@ -1,6 +1,6 @@
 import { Button, CircularProgress, FormControl, FormControlLabel, FormHelperText, FormLabel, LinearProgress, Paper, Radio, RadioGroup, Stack, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
-import TestService from '../services/test.service';
+import TestService from '../../services/test.service';
 
 const testService = new TestService();
 const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId }) => {
