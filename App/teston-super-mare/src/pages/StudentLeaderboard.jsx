@@ -55,9 +55,11 @@ const StudentLeaderboard = ({ userId }) => {
                     )}</>
                 </List>
                 <p style={{ textAlign: 'center' }}>
-                    You are {jointPlace()}{userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} with
-                    an average of {Math.round(userStats.average * 100)}% from {userStats.total} test{userStats.total === 1 ? '' : 's'}
+                    You are {jointPlace()}{userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} students
                     {userStats.rank < topNum ? ', congratulations!' : '.'}
+                    <br/><br/>
+                    You have an average of {Math.round(userStats.average * 100)}%
+                    from {userStats.total} test{userStats.total === 1 ? '' : 's'}.
                 </p>
             </Stack>
         </Paper>
