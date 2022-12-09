@@ -133,7 +133,7 @@ class TestResultsController {
             total: testResults.filter(testResult => testResult.studentId === studentId).length
         };
 
-        res.status(200).send({ studentLeaderboard, totalStudents: students.length, userStats });
+        res.json({ studentLeaderboard, totalStudents: students.length, userStats });
     }
 }
 
