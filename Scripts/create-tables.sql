@@ -12,6 +12,7 @@ CREATE TABLE `users` (
   `email` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
   `lastLoginTime` DATETIME,
+  `isApproved` BOOLEAN DEFAULT false,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;

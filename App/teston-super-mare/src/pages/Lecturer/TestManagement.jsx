@@ -1,10 +1,9 @@
 import React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import {
-    Box, Stack, Paper, Button, InputLabel, MenuItem, FormControl, TextField, Dialog,
-    DialogActions, DialogContent, DialogTitle, Select, Typography, Input, FormHelperText
-}
-    from '@mui/material'
+    Stack, Input, Button, InputLabel, MenuItem, FormControl, TextField, Dialog,
+    DialogActions, DialogContent, DialogTitle, Select, Typography
+} from '@mui/material'
 import TestManagementService from '../../services/TestManagement.service'
 import SubjectsService from '../../services/subjects.service';
 
@@ -59,7 +58,7 @@ export default function TestManagement() {
     async function handleUpdateQuestion(questionRow) {
         await testService.updateQuestion(questionRow)
         setRows(rows => {
-            const index = rows.findIndex(row => row.questionId === questionRow.questionId) 
+            const index = rows.findIndex(row => row.questionId === questionRow.questionId)
             const copy = rows.slice()
             copy[index] = questionRow
             return copy
@@ -110,7 +109,7 @@ export default function TestManagement() {
     function handleCloseNewQuestionDialog() { setNewQuestionDialogOpen(false); }
 
     async function handleCreateNewTestClick() {
-        const test = await testService.addTest(newTestName);  
+        const test = await testService.addTest(newTestName);
         setTests(tests => tests.concat([test]));
         handleCloseNewTestDialog();
     }
@@ -120,46 +119,37 @@ export default function TestManagement() {
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                width: '100%',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <Paper sx={{ p: 2 }}>
-                <Dialog
-                    open={newTestDialogOpen}
-                    onClose={handleCloseNewTestDialog}
-                    fullWidth
-                    maxWidth="xs"
-                >
-                    <DialogTitle>
-                        Create a New Test
-                    </DialogTitle>
-                    <DialogContent>
-                        <Stack spacing={2}>
-                            <Typography>
-                                Please enter the name of the new test.
-                            </Typography>
-                            <TextField
-                                required
-                                label="Required"
-                                value={newTestName}
-                                onChange={handleNewTestNameInput}
-                                fullWidth
-                            />
-                        </Stack>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseNewTestDialog}>Cancel</Button>
-                        <Button onClick={handleCreateNewTestClick} autoFocus>
-                            Create
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+        <>
+            <Dialog
+                open={newTestDialogOpen}
+                onClose={handleCloseNewTestDialog}
+                fullWidth
+                maxWidth="xs"
+            >
+                <DialogTitle>
+                    Create a New Test
+                </DialogTitle>
+                <DialogContent>
+                    <Stack spacing={2}>
+                        <Typography>
+                            Please enter the name of the new test.
+                        </Typography>
+                        <TextField
+                            required
+                            label="Required"
+                            value={newTestName}
+                            onChange={handleNewTestNameInput}
+                            fullWidth
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseNewTestDialog}>Cancel</Button>
+                    <Button onClick={handleCreateNewTestClick} autoFocus>
+                        Create
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
                 <Dialog
                     open={newQuestionDialogOpen}
@@ -292,7 +282,6 @@ export default function TestManagement() {
                         </Button>
                     </Stack>
                 </Stack>
-            </Paper>
-        </Box>
+            </>
     )
 }
