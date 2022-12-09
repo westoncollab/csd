@@ -1,15 +1,34 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration/Registration';
+import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
+import UsersService from './services/users.service';
 import Test from "./pages/Test/Test";
 import StudentLeaderboard from './pages/StudentLeaderboard';
+import Login from './pages/Login/Login';
 
-function App() {
+const users = new UsersService();
+
+function App() { 
+    const [user, setUser] = React.useState(null);// eslint-disable-line
+ 
+    async function handleLogin(email, password) { // eslint-disable-line
+        const user = await users.tryLogin(email, password);
+        setUser(user);
+    }
+ 
+    function handleLogout() { // eslint-disable-line
+        setUser({ isAuthenticated: false });
+    }
+    
   return (<BrowserRouter>
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
+        <Route path='lecturer' element={<LecturerDashboard/>} />  
+        <Route path="login" element={<Login />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'

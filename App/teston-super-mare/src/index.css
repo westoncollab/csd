@@ -10,3 +10,8 @@ body {
 .MuiPaper-root {
   padding: 40px;
 }
+
+button > a {
+  color: unset;
+  text-decoration: none;
+}

@@ -10,6 +10,8 @@ CREATE TABLE `users` (
   `lastName` VARCHAR(128) NOT NULL,
   `email` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
+  `lastLoginTime` DATETIME,
+  `isApproved` BOOLEAN DEFAULT false,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
@@ -47,11 +49,11 @@ Create TABLE `studentTestAssignments` (
 
 Create TABLE `questions` (
   `questionId` INT NOT NULL AUTO_INCREMENT,
-  `question` TEXT NOT NULL,
-  `answerA` TEXT,
-  `answerB` TEXT,
-  `answerC` TEXT,
-  `answerD` TEXT,
+  `question` TEXT,
+  `correctAnswer` TEXT,
+  `incorrectAnswerA` TEXT,
+  `incorrectAnswerB` TEXT,
+  `incorrectAnswerC` TEXT,
   `subjectId` INT NOT NULL,
   `createdByLecturerId` INT NOT NULL,
   PRIMARY KEY (`questionId`)
