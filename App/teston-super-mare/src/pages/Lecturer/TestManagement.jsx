@@ -95,7 +95,15 @@ export default function TestManagement() {
                     newQuestionSubjectId
                 }
             );
-            setRows(rows => rows.concat([questionRow]));
+            setRows(rows => rows.concat([{
+                question: newQuestion,
+                correctAnswer: newCorrectAnswer,
+                incorrectAnswerA: newIncorrectAnswer1,
+                incorrectAnswerB: newIncorrectAnswer2,
+                incorrectAnswerC: newIncorrectAnswer3,
+                subjectName: allSubjects.find(s => s.subjectId === newQuestionSubjectId).subjectName,
+                ...questionRow
+            }]));
         }
         handleCloseNewQuestionDialog();
     }
