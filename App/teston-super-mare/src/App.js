@@ -32,7 +32,7 @@ function App() {
             ]}
             userId={1}
         />} />
-        <Route path='student/leaderboard' element={<StudentLeaderboard userId={1} />} />
+        <Route path='student/leaderboard' element={<StudentLeaderboard userId={1} userSubject={1} />} />
       </Route>
     </Routes>
   </BrowserRouter>);

@@ -23,15 +23,15 @@ class TestResultsController {
         });
     }
 
-    _calcAverageTestScore (allTests, testResults, studentId, studentSubject, includeIncompleted = false) {
+    _calcAverageTestScore (allTests, testResults, studentId, subjectId, includeIncompleted = false) {
         const valueOfIncompleteTest = 0;
         let testsCompleted = 0;
         const scoresSum = allTests.reduce((prevVal, currentTest) => {
             const resultRecord = testResults.find(row => row.testId === currentTest.testId && row.studentId === studentId);
             testsCompleted += resultRecord ? 1 : 0;
-            if (includeIncompleted && !resultRecord) {
+            if (includeIncompleted && !resultRecord && currentTest.subjects.includes(subjectId)) {
                 // only use valueOfIncompleteTest for score of tests never done if includeIncompleted
-                // and student has same subject
+                // and test is on same subject as student
                 return prevVal + valueOfIncompleteTest;
             } else if (resultRecord) {
                 // otherwise, a normal decimal correct out of max questions, ignoring tests never done
@@ -53,7 +53,7 @@ class TestResultsController {
     _calcStudentAveragesIncIncompleteTests (allTests, students, testResults) {
         const studentAverages = students.map(stu => ({ 
             studentId: stu.userId,
-            average: this._calcAverageTestScore(allTests, testResults, stu.userId, true)
+            average: this._calcAverageTestScore(allTests, testResults, stu.userId, stu.subjectId, true)
         }));
         studentAverages.sort((a, b) => b.average - a.average);
         return studentAverages;
@@ -104,7 +104,8 @@ class TestResultsController {
             this.db.query(`
                 SELECT
                     \`userId\`,
-                    CONCAT(\`firstName\`, " ", \`lastName\`) AS name
+                    CONCAT(\`firstName\`, " ", \`lastName\`) AS name,
+                    \`subjectId\`
                 FROM \`users\`
                 WHERE \`roleId\` = 3;
             `),
@@ -144,13 +145,12 @@ class TestResultsController {
             }
             return total;
         }, []);
-        console.log('allTests', allTests);
         
         const studentAverages = this._calcStudentAveragesIncIncompleteTests(allTests, students, testResults);
         const { studentLeaderboard, studentRank } = this._rankStudentsByAverage(numToGet, studentAverages, students, studentId);
         const userStats = {
             rank: studentRank,
-            average: this._calcAverageTestScore(allTests, testResults, studentId),
+            average: this._calcAverageTestScore(allTests, testResults, studentId, students.find(s => s.userId === studentId).subjectId),
             total: testResults.filter(testResult => testResult.studentId === studentId).length
         };
 

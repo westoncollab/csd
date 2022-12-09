@@ -5,7 +5,7 @@ import TestService from '../services/test.service';
 
 const testService = new TestService();
 const StudentLeaderboard = ({ userId }) => {
-    const topNum = 10;
+    const topNum = 5;
     const [students, setStudents] = useState([{ place: 0, uid: 0, name: '' }]);
     const [userStats, setUserStats] = useState({ rank: 0, average: 0, total: 0 });
     const [totalStudents, setTotalStudents] = useState(0);
@@ -46,9 +46,10 @@ const StudentLeaderboard = ({ userId }) => {
                         <ListItem key={i} sx={str.uid === userId ? { border: 1, borderColor: 'lightgrey', borderRadius: 1} : {}}>
                             <ListItemIcon>
                                 {str.place === 1 ? <EmojiEvents sx={{ color: '#f2cb30' }} />
-                                    : str.place === 2 ? <EmojiEvents sx={{ color: '#83888e' }} />
-                                        : str.place === 3 ? <EmojiEvents sx={{ color: '#cd7f32' }} />
-                                            : <WorkspacePremium sx={{ color: 'lightgrey' }} />}
+                                : str.place === 2 ? <EmojiEvents sx={{ color: '#83888e' }} />
+                                : str.place === 3 ? <EmojiEvents sx={{ color: '#cd7f32' }} />
+                                : <WorkspacePremium sx={{ color: 'lightgrey' }} />}
+                                {str.place}
                             </ListItemIcon>
                             <ListItemText>{str.name}</ListItemText>
                         </ListItem>
@@ -56,7 +57,7 @@ const StudentLeaderboard = ({ userId }) => {
                 </List>
                 <p style={{ textAlign: 'center' }}>
                     You are {jointPlace()}{userStats.rank}{ordinalSuffix(userStats.rank)} of {totalStudents} students
-                    {userStats.rank < topNum ? ', congratulations!' : '.'}
+                    {userStats.rank <= topNum ? ', congratulations!' : '.'}
                     <br/><br/>
                     You have an average of {Math.round(userStats.average * 100)}%
                     from {userStats.total} test{userStats.total === 1 ? '' : 's'}.
