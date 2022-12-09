@@ -9,7 +9,7 @@ const StudentLeaderboard = ({ userId }) => {
     const topNum = 10;
     const [students, setStudents] = useState([{ place: 0, uid: 0, name: '' }]);
     const [userStats, setUserStats] = useState({ rank: 0, average: 0, total: 0 });
-    const [totalStudents, setTotalStudents] = useState(98);
+    const [totalStudents, setTotalStudents] = useState(0);
 
     useEffect(() => {
         testService.getStudentLeaderboard(topNum, userId).then(({ studentLeaderboard, userStats, totalStudents }) => {
