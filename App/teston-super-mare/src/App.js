@@ -3,7 +3,7 @@ import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration/Registration';
 import Test from "./pages/Test/Test";
-import StudentLeaderboard from './pages/StudentLeaderboard/StudentLeaderboard';
+import StudentLeaderboard from './pages/StudentLeaderboard';
 
 function App() {
   return (<BrowserRouter>
