@@ -10,16 +10,21 @@ class UsersService {
     }
 
     async tryLogin(email, password) {
-        const res = await this._api.post('/users/login', { email, password });
-        if (res.status === 400) {
-            return {
-                isAuthenticated: false
-            }
-        } else {
+        try {
+            const res = await this._api.post('/users/login', { email, password });
             return {
                 isAuthenticated: true,
                 ...res.data
             }
+        }
+        catch (axiosError) { 
+            if (axiosError.code === 'ERR_BAD_REQUEST') { 
+                return {
+                    isAuthenticated: false
+                }
+            } 
+
+            throw axiosError
         } 
     }
 

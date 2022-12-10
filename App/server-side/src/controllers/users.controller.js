@@ -44,7 +44,7 @@ class UsersController {
             email = ?
         `, [email]).then((rows) => {
             if (rows.length === 0 || !bcrypt.compareSync(password, rows[0].password)) {
-                res.status(400).send('Invalid username or password.');
+                res.status(401).send('Invalid username or password.');
             } else {
                 // Update the last login time but don't wait for a response.
                 this.db.query('UPDATE users SET lastLoginTime = NOW() WHERE email = ?', [email]);
