@@ -6,6 +6,7 @@ const testResultsRoute = require('./src/routes/test-results.route');
 const getConfig = require('./config');
 const configureEndpoints = require('./configureEndpoints');
 const testManagementRoute = require('./src/routes/testManagement.route');
+const subjectsRoute = require('./src/routes/subjects.route');
 
 const app = express();
 const port = 5000;
@@ -28,6 +29,7 @@ mariadb.createConnection({
     testManagementRoute(app, db);
     usersRoute(app, db);
     testResultsRoute(app, db);
+    subjectsRoute(app, db);
 
     app.listen(port, () => {
         console.log(`Now listening on port http://localhost:${port}`);

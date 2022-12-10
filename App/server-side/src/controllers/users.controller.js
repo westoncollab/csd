@@ -10,15 +10,15 @@ class UsersController {
     }
 
     saveNewUser(req, res) {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, subjectId, email, password } = req.body;
 
         // Salt automatically added bcrypt.
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
         this.db.query(`
-        INSERT INTO \`users\` (\`firstName\`, \`lastName\`, \`roleId\`, \`email\`, \`password\`)
-        VALUES (?, ?, ?, ?, ?);
-        `, [firstName, lastName, studentRoleId, email, hashedPassword]).then(dbResponse => {
+        INSERT INTO \`users\` (\`firstName\`, \`lastName\`, \`subjectId\`, \`roleId\`, \`email\`, \`password\`)
+        VALUES (?, ?, ?, ?, ?, ?);
+        `, [firstName, lastName, subjectId, studentRoleId, email, hashedPassword]).then(dbResponse => {
             if (dbResponse.affectedRows && dbResponse.affectedRows === 1) {
                 res.status(201).send('success');
             }

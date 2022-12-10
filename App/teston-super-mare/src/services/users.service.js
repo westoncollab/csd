@@ -5,8 +5,8 @@ class UsersService {
 		this._api = axios.create({ baseURL: 'http://localhost:5000' });
 	}
 
-    async saveNewUser (firstName, lastName, email, password) {
-        return await this._api.post('/users/new', { firstName, lastName, email, password });
+    async saveNewUser (firstName, lastName, subjectId, email, password) {
+        return await this._api.post('/users/new', { firstName, lastName, subjectId, email, password });
     }
 
     async tryLogin(email, password) {
