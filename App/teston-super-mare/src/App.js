@@ -6,6 +6,7 @@ import Registration from './pages/Registration';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import UsersService from './services/users.service';
 import Test from './pages/Student/Test';
+import StudentLeaderboard from './pages/Student/Leaderboard';
 import Login from './pages/Login/Login';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 
@@ -47,7 +48,7 @@ function App() {
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'
-            testId={7}
+            testId={1}
             subjects={['General Knowledge']}
             createdByLecturer='Lenny Lecturer'
             questions={[
@@ -64,8 +65,9 @@ function App() {
               // { qid: 11, question: 'What question was that?', a: '6', b: '13', c: '5', answer: 'c'},
               // { qid: 12, question: 'Which is the best flavour?', a: 'Orange', b: 'Rose', c: 'Marmite', answer: 'b'}
             ]}
-            userId={9}
+            userId={1}
         />} />
+        <Route path='student/leaderboard' element={<StudentLeaderboard userId={1} userSubject={1} />} />
       </Route>
     </Routes>
   </BrowserRouter>);
