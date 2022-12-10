@@ -7,6 +7,7 @@ import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import UsersService from './services/users.service';
 import Test from "./pages/Test/Test";
 import Login from './pages/Login/Login';
+import AccessDenied from './pages/AccessDenied/AccessDenied';
 
 const users = new UsersService();
 
@@ -16,18 +17,33 @@ function App() {
     async function handleLogin(email, password) { // eslint-disable-line
         const user = await users.tryLogin(email, password);
         setUser(user);
+        
+        return user;
     }
  
     function handleLogout() { // eslint-disable-line
         setUser({ isAuthenticated: false });
     }
     
+    function ProtectedRoute({ requiredRole, children }) {
+        return !user || user.roleName !== requiredRole ? <AccessDenied/> : children;
+    }
+
   return (<BrowserRouter>
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-        <Route path='lecturer' element={<LecturerDashboard/>} />  
-        <Route path="login" element={<Login />} /> 
+        
+        <Route 
+            path='lecturer' 
+            element={
+                <ProtectedRoute requiredRole="Lecturer">
+                    <LecturerDashboard user={user} />
+                </ProtectedRoute>
+            } 
+        />  
+
+        <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='test' element={<Test
             testName='Programming 102'

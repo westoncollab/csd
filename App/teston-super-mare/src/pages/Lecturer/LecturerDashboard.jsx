@@ -34,7 +34,7 @@ function TabPanel(props) {
     );
 }
 
-export default function LecturerDashboard() {
+export default function LecturerDashboard({ user }) {
     const [tabIndex, setTabIndex] = React.useState(0);
 
     const handleChange = (_event, newIndex) => {
@@ -54,7 +54,7 @@ export default function LecturerDashboard() {
             <Paper sx={{ p: 2 }}>
                 <Stack spacing={2} >
                     <Typography variant="h5" component="div">
-                        Hello, Lecturer! 🎓
+                        {`Hello, ${user?.email ?? "Lecturer"}! 🎓`}
                     </Typography>
                     <Box
                         sx={{
