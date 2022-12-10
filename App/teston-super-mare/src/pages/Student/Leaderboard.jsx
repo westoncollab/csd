@@ -1,7 +1,7 @@
 import { Button, List, ListItem, ListItemIcon, ListItemText, Paper, Stack } from '@mui/material';
 import { EmojiEvents, WorkspacePremium } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import TestService from '../services/test.service';
+import TestService from '../../services/test.service';
 
 const testService = new TestService();
 const StudentLeaderboard = ({ userId }) => {
@@ -38,7 +38,7 @@ const StudentLeaderboard = ({ userId }) => {
         <Button variant='contained' href='/' style={{ position: 'absolute', top: '100px', left: '15vw' }}>
             Back to dashboard
         </Button>
-        <Paper style={{ width: '30vw', minWidth: '280px' }}>
+        <Paper style={{ width: '30vw', minWidth: '280px' }} sx={{ p: 5 }}>
             <Stack alignItems='center'>
                 <h2>Top {Math.min(topNum, totalStudents)} Students</h2>
                 <List>
