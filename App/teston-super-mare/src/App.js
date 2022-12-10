@@ -3,7 +3,7 @@ import Landing from './pages/Landing/Landing';
 import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration/Registration';
 import Test from "./pages/Test/Test";
-import StudentDashboard from "./pages/Student-Dashboard/student-dashboard";
+import Studentdashboard from "./pages/Studentdashboard/Studentdashboard";
 
 function App() {
   return (<BrowserRouter>
@@ -11,7 +11,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
         <Route path='signup' element={<Registration />} />
-        <Route path='studentdashboard' element={<StudentDashboard />} />
+        <Route path='Studentdashboard' element={<Studentdashboard />} />
         <Route path='test' element={<Test
             testName='Programming 102'
             testId={7}
