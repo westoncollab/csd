@@ -158,7 +158,7 @@ export default function TestManagement() {
                     maxWidth="xs">
                     <DialogTitle>Create a New Question</DialogTitle>
                     <DialogContent>
-                        <Stack spacing={2}>
+                         <Stack spacing={2} sx={{ pt: 1 }}>
                             <FormControl>
                                 <InputLabel htmlFor='question-input'>Question</InputLabel>
                                 <Input
