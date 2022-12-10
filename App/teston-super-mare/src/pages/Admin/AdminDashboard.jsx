@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import LecturerManagement from './LecturerManagement';
+import SubjectManagement from './SubjectManagement';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,10 +64,14 @@ export default function AdminDashboard({ user }) {
                     >
                         <Tabs value={tabIndex} onChange={handleChange} aria-label="lecturer tabs">
                             <Tab label="Lecturer Management" />
+                            <Tab label="Subject Management" />
                         </Tabs>
                     </Box>
                     <TabPanel value={tabIndex} index={0}>
                         <LecturerManagement />
+                    </TabPanel> 
+                    <TabPanel value={tabIndex} index={1}>
+                        <SubjectManagement />
                     </TabPanel> 
                 </Stack>
             </Paper>
