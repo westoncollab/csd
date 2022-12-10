@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
-import { FormControl, Stack, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { FormControl, Stack, InputLabel, Input, FormHelperText, Button, Alert, AlertTitle, Paper, Select, MenuItem } from '@mui/material';
 import UsersService from '../services/users.service';
+import SubjectsService from '../services/subjects.service';
 
 const usersService = new UsersService();
+const subjectsService = new SubjectsService();
 const Registration = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [alert, setAlert] = useState('');
+    const [allSubjects, setSubjects] = useState([]);
+    const [subject, setSubject] = useState('');
 
-    function handleSubmit() {
-        if (firstName || lastName || email || password) {
-            usersService.saveNewUser(firstName, lastName, email, password).then(() => {
-                setAlert('success');
-            }).catch (err => {
-                if (err.response.data && err.response.data === 'duplicate') {
-                    setAlert('duplicate');
-                } else {
-                    setAlert('error');
-                }
-            });
-        }
+    function handleSubmit(event) {
+        // prevent normal form HTTP call, handle submission with JS instead
+        event.preventDefault();
+
+        // redirect new user or show error message
+        usersService.saveNewUser(
+            firstName,
+            lastName,
+            subject,
+            email,
+            password
+        ).then(() => {
+            setAlert('success');
+        }).catch (err => {
+            if (err.response.data && err.response.data === 'duplicate') {
+                setAlert('duplicate');
+            } else {
+                setAlert('error');
+            }
+        });
     }
 
     function handleInput(e, setter) {
@@ -35,6 +47,10 @@ const Registration = () => {
             setter(newValue);
         }
     }
+
+    useEffect(() => {
+        subjectsService.getAllSubjects().then(setSubjects);
+    }, []);
 
     return (<>
         {alert === 'duplicate' ?
@@ -55,8 +71,10 @@ const Registration = () => {
         : null}
         <Paper sx={{
             p: 5,
-            height: 0.7,
-            width: 320
+            height: 0.85,
+            width: 320,
+            mt: 1,
+            ml: 'auto',  mr: 'auto'
         }}>
             <Stack justifyContent='space-around' sx={{ height: 1 }}>
                 <FormControl>
@@ -76,6 +94,20 @@ const Registration = () => {
                         onChange={(e) => handleInput(e, setLastName)}
                         type='input'
                         required />
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id='subject-select-label'>Subject</InputLabel>
+                    <Select required
+                        labelId='subject-select-label'
+                        id='subject-select'
+                        value={subject}
+                        label='Subject'
+                        onChange={(e) => setSubject(e.target.value)}
+                    >
+                        {allSubjects.map(s =>
+                            <MenuItem key={s.subjectId} value={s.subjectId}>{s.subjectName}</MenuItem>
+                        )}
+                    </Select>
                 </FormControl>
                 <FormControl>
                     <InputLabel htmlFor='email'>Email address</InputLabel>
