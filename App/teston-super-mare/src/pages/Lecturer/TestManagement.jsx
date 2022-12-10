@@ -8,12 +8,12 @@ import TestManagementService from '../../services/TestManagement.service'
 import SubjectsService from '../../services/subjects.service';
 
 const columns = [
-    { field: 'question', headerName: 'Question', flex: 3, editable: true },
-    { field: 'correctAnswer', headerName: 'Correct Answer', flex: 1, editable: true },
-    { field: 'incorrectAnswerA', headerName: 'Incorrect Answer 1', flex: 1, editable: true },
-    { field: 'incorrectAnswerB', headerName: 'Incorrect Answer 2', flex: 1, editable: true },
-    { field: 'incorrectAnswerC', headerName: 'Incorrect Answer 3', flex: 1, editable: true },
-    { field: 'subjectName', headerName: 'Subject', flex: 1, editable: true }
+    { field: 'question', headerName: 'Question', flex: 3 },
+    { field: 'correctAnswer', headerName: 'Correct Answer', flex: 1 },
+    { field: 'incorrectAnswerA', headerName: 'Incorrect Answer 1', flex: 1 },
+    { field: 'incorrectAnswerB', headerName: 'Incorrect Answer 2', flex: 1 },
+    { field: 'incorrectAnswerC', headerName: 'Incorrect Answer 3', flex: 1 },
+    { field: 'subjectName', headerName: 'Subject', flex: 1 }
 ];
 
 const testService = new TestManagementService();
@@ -158,7 +158,7 @@ export default function TestManagement() {
                     maxWidth="xs">
                     <DialogTitle>Create a New Question</DialogTitle>
                     <DialogContent>
-                        <Stack spacing={2}>
+                         <Stack spacing={2} sx={{ pt: 1 }}>
                             <FormControl>
                                 <InputLabel htmlFor='question-input'>Question</InputLabel>
                                 <Input
