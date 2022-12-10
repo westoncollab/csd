@@ -1,0 +1,45 @@
+header {
+    text-align: center;
+}
+
+header h1 {
+    margin: 10px;
+}
+
+.body {
+    min-height: CALC(100vh - 163px);
+    background-image: url("../../assets/Background\ picture.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.body-content {
+    max-width: 1000px;
+}
+
+table {
+    border: 2px solid blue;
+    width: 800px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+    
+  th {
+    border-bottom: 1px solid black;
+  }
+    
+  td {
+    text-align: center;
+  }
