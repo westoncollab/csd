@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing/Landing';
+import Landing from './pages/Landing';
 import Layout from './pages/Layout/Layout';
-import Registration from './pages/Registration/Registration';
+import Registration from './pages/Registration';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import UsersService from './services/users.service';
-import Test from "./pages/Test/Test";
+import Test from './pages/Student/Test';
 import Login from './pages/Login/Login';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 
