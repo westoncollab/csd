@@ -313,7 +313,7 @@ class TestsController {
             
             // questions
             let questions = [];
-            if (numQuestionsToGet > testQuestions.length) {
+            if (numQuestionsToGet >= testQuestions.length) {
                 // use all questions in test
                 questions = testQuestions.map(this._randomiseQuestionAnswers);
             } else {
