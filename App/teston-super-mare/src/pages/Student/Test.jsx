@@ -1,9 +1,16 @@
-import { Button, CircularProgress, FormControl, FormControlLabel, FormHelperText, FormLabel, LinearProgress, Paper, Radio, RadioGroup, Stack, Grid } from '@mui/material';
+import { Button, CircularProgress, FormControl, FormControlLabel, FormHelperText, FormLabel, LinearProgress, Paper, Radio, RadioGroup, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import TestService from '../../services/test.service';
 
 const testService = new TestService();
-const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId }) => {
+const Test = ({ user }) => {
+    const { userId } = user;
+    const { testId } = useParams();
+    const [testName, setTestName] = useState('');
+    const [subjects, setSubjects] = useState([]);
+    const [createdByLecturer, setLecturer] = useState('');
+    const [questions, setQuestions] = useState([]);
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
         questions.map(q => [q.qid, null ])
     ));
