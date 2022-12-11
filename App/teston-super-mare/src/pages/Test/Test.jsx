@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import TestController from './Test.controller';
-
 const testController = new TestController();
 const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId }) => {
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
@@ -24,18 +23,15 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [progress, setProgress] = useState(0);
     const [alert, setAlert] = useState('');
-
     function answeredQuestions() {
         return Array.from(questionAnswers.values()).reduce((total, a) => a ? total + 1 : total, 0);
     }
     function correctlyAnsweredQuestions() {
         return questions.reduce((total, { qid }) => answeredQuestionCorrectly(qid) ? total + 1 : total, 0);
     }
-
     function maxQuestions() {
         return questions.length;
     }
-
     function handleAnswerChoice(e, question) {
         // store answer choice
         const answer = e.target.value;
@@ -43,13 +39,11 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
         newQuestionAnswers.set(Number(question), answer);
         setQuestionAnswers(newQuestionAnswers);
     }
-
     useEffect(() => {
         // update progress bar every time a question is answered
         const decimalComplete = answeredQuestions() / maxQuestions();
         setProgress(Math.ceil(decimalComplete * 100));
     }, [questionAnswers]);
-
     function onSubmitAnswers() {
         setHasSubmitted(true);
         setAlert('loading');
@@ -62,12 +56,10 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
             setAlert('error');
         });
     }
-
     function answeredQuestionCorrectly(qid) {
         const correctAnswer = questions.find(q => q.qid === qid).answer;
         return questionAnswers.get(qid) === correctAnswer;
     }
-
     return (
         <Paper className='test'>
             {/*heading*/}
@@ -119,5 +111,4 @@ const Test = ({ testName, testId, subjects, createdByLecturer, questions, userId
         </Paper>
     )
 }
-
 export default Test;

@@ -8,9 +8,11 @@ CREATE TABLE `users` (
   `userId` INT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(128) NOT NULL,
   `lastName` VARCHAR(128) NOT NULL,
+  `subjectId` INT REFERENCES `subjects`(`subjectId`),
   `email` VARCHAR(128) NOT NULL UNIQUE,
   `password` VARCHAR(128) NOT NULL,
   `lastLoginTime` DATETIME,
+  `isApproved` BOOLEAN DEFAULT false,
   `roleId` INT NOT NULL,
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
@@ -26,6 +28,7 @@ CREATE TABLE `testResults` (
   `questionId` INT NOT NULL REFERENCES `questions`(`questionId`),
   `studentId` INT NOT NULL REFERENCES `users`(`userId`),
   `date` DATETIME NOT NULL,
+  `answeredInTestId` INT NOT NULL REFERENCES `tests`(`testId`),
   `correct` BOOLEAN NOT NULL,
   PRIMARY KEY (`questionId`, `studentId`, `date`)
 ) ENGINE = InnoDB;
