@@ -2,7 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const mariadb = require('mariadb');
 const usersRoute = require('./src/routes/users.route');
-const testResultsRoute = require('./src/routes/test-results.route');
+const testsRoute = require('./src/routes/tests.route');
 const getConfig = require('./config');
 const configureEndpoints = require('./configureEndpoints');
 const testManagementRoute = require('./src/routes/testManagement.route');
@@ -28,7 +28,7 @@ mariadb.createConnection({
     configureEndpoints(app, db);
     testManagementRoute(app, db);
     usersRoute(app, db);
-    testResultsRoute(app, db);
+    testsRoute(app, db);
     subjectsRoute(app, db);
 
     app.listen(port, () => {

@@ -1,5 +1,5 @@
 
-class TestResultsController {
+class TestsController {
     constructor(db) {
         this.db = db;
     }
@@ -156,6 +156,61 @@ class TestResultsController {
 
         res.json({ studentLeaderboard, totalStudents: students.length, userStats });
     }
+
+    async getTestsOfSubject (req, res) {
+        try {
+            const subject = Number(req.query.subject);
+
+            const testsSubjects = await this.db.query(`
+                SELECT
+                    \`tests\`.\`testId\`, 
+                    \`tests\`.\`name\` AS testName,
+                    CONCAT(\`users\`.\`firstName\`, " ", \`users\`.\`lastName\`) AS lecturerName,
+                    \`subjects\`.\`subjectId\`,
+                    \`subjects\`.\`subjectName\`
+                FROM \`tests\`
+                JOIN \`users\` ON \`tests\`.\`createdByLecturerId\` = \`users\`.\`userId\`
+                JOIN \`testQuestions\` ON \`tests\`.\`testId\` = \`testQuestions\`.\`testId\`
+                JOIN \`questions\` ON \`testQuestions\`.\`questionId\` = \`questions\`.\`questionId\`
+                JOIN \`subjects\` ON \`questions\`.\`subjectId\` = \`subjects\`.\`subjectId\`
+                GROUP BY \`tests\`.\`testId\`, \`questions\`.\`subjectId\`;
+            `);
+
+            // collect tests' subjects
+            const tests = testsSubjects
+            .reduce((total, current) => {
+                const existingIndex = total.findIndex(t => t.testId === current.testId);
+                if (existingIndex !== -1) {
+                    // replace existing test obj
+                    total[existingIndex].subjectIds = total[existingIndex].subjectIds.concat([current.subjectId]);
+                    total[existingIndex].subjectNames = total[existingIndex].subjectNames.concat([current.subjectName]);
+                } else {
+                    // add a new test obj
+                    total.push({
+                        testId: current.testId,
+                        testName: current.testName,
+                        subjectIds: [current.subjectId],
+                        subjectNames: [current.subjectName],
+                        lecturerName: current.lecturerName
+                    });
+                }
+                return total;
+            }, [])
+            // only keep tests with questions with the same subject as the student
+            .filter(t => t.subjectIds.includes(subject))
+            .map(t => ({
+                id: t.testId,
+                testName: t.testName,
+                subjects: t.subjectNames.join(', '),
+                lecturerName: t.lecturerName
+            }));
+
+            res.status(200).send(tests);
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    }
 }
 
-module.exports = TestResultsController;
+module.exports = TestsController;

@@ -13,6 +13,11 @@ class TestService {
         const res = await this._api.get(`/results/leaderboard?numToGet=${numToGet}&studentId=${userId}`);
         return res.data;
     }
+
+    async getTests (subject) {
+        const res = await this._api.get(`/tests/student?subject=${subject}`);
+        return res.data;
+    }
 }
 
 export default TestService;

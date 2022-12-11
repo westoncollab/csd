@@ -7,8 +7,7 @@ import Test from './pages/Student/Test';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import UsersService from './services/users.service';
-import StudentDashboard from './pages/Student/Studentdashboard';
-import StudentLeaderboard from './pages/Student/Leaderboard'; 
+import StudentDashboard from './pages/Student/dashboard';
 import Login from './pages/Login/Login';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 
