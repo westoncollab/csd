@@ -5,6 +5,7 @@ import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration';
 import Test from './pages/Student/Test';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import UsersService from './services/users.service';
 import Studentdashboard from "./pages/Studentdashboard/Studentdashboard";
 import StudentLeaderboard from './pages/Student/Leaderboard'; 
@@ -35,7 +36,6 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-        
         <Route 
             path='lecturer' 
             element={
@@ -44,7 +44,14 @@ function App() {
                 </ProtectedRoute>
             } 
         />  
-
+        <Route
+            path="admin"
+            element={
+                <ProtectedRoute requiredRole="Admin">
+                    <AdminDashboard user={user} />
+                </ProtectedRoute>
+            }
+        />
         <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
         <Route path='Studentdashboard' element={<Studentdashboard />} />

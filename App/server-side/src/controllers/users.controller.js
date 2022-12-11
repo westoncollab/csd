@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
+const studentRoleId = 3;
+const lecturerRoleId = 2;
 
 class UsersController {
     constructor(db) {
@@ -16,7 +18,7 @@ class UsersController {
         this.db.query(`
         INSERT INTO \`users\` (\`firstName\`, \`lastName\`, \`subjectId\`, \`roleId\`, \`email\`, \`password\`)
         VALUES (?, ?, ?, ?, ?, ?);
-        `, [firstName, lastName, subjectId, 3, email, hashedPassword]).then(dbResponse => {
+        `, [firstName, lastName, subjectId, studentRoleId, email, hashedPassword]).then(dbResponse => {
             if (dbResponse.affectedRows && dbResponse.affectedRows === 1) {
                 res.status(201).send('success');
             }
@@ -116,6 +118,88 @@ class UsersController {
                 })
         })
 
+    }
+
+    getLecturers(req, res) {
+        this.db.query(`
+        SELECT
+        userId, firstName, lastName, email, lastLoginTime, isApproved
+        FROM 
+            users
+        INNER JOIN roles ON
+            users.roleId = roles.roleId
+        WHERE
+            roles.roleName = "Lecturer"
+        `).then((rows) => {
+            if (rows.length === 0) {
+                res.json([]);
+            } else {
+                res.json(rows);
+            }
+        }).catch(error => {
+            console.log(error);
+            res.status(500).send();
+        });
+    }
+
+    addLecturer(req, res) {
+         const { firstName, lastName, email, password } = req.body;
+
+        // Salt automatically added bcrypt.
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+
+        this.db.query(`
+        INSERT INTO users (firstName, lastName, roleId, email, password, isApproved)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `, [firstName, lastName, lecturerRoleId, email, hashedPassword, 1]).then(dbResponse => {
+            if (dbResponse.affectedRows && dbResponse.affectedRows === 1) {
+                res.status(201).json({ insertId: Number(dbResponse.insertId) });
+            }
+        }).catch(err => {
+            if (err.code === 'ER_DUP_ENTRY') {
+                res.status(500).send('duplicate');
+            } else {
+                console.log(err);
+                res.send(err);
+            }
+        })
+    }
+
+    updateLecturer(req, res) {
+        const { userId, firstName, lastName, email, isApproved } = req.body;
+        if (!userId) {
+            res.status(400).send('userId is required in the request\'s JSON body');
+            return;
+        }
+
+        // If the argument is 'undefined', convert it to 'null' so it can be sent to the database.
+        function undefinedGuard(arg) {
+            return arg === undefined ? null : arg
+        }
+
+        this.db.query(
+            `UPDATE users
+            SET firstName = ?, lastName = ?, email = ?, isApproved = ?
+            WHERE userId = ?`,
+            [
+                undefinedGuard(firstName),
+                undefinedGuard(lastName),
+                undefinedGuard(email),
+                undefinedGuard(isApproved),
+                userId
+            ])
+            .then(() => {
+                res.status(200).send();
+            })
+    }
+
+    deleteLecuters(req, res) {
+        const { userIds } = req.body;
+    
+        this.db.query(`DELETE FROM users WHERE userId IN (?)`, [userIds])
+            .then(() => {
+                res.status(200).send();
+            })
     }
 }
 
