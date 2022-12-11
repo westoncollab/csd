@@ -1,6 +1,9 @@
 import { Box, Stack, Typography, Paper, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-export default function AccessDenied({ onGoHomeClick }) {
+export default function AccessDenied() {
+    const navigate = useNavigate();
+
     return (
         <Box
             sx={{
@@ -11,8 +14,7 @@ export default function AccessDenied({ onGoHomeClick }) {
                 alignItems: 'center'
             }}
         >
-            <Paper 
-            >
+            <Paper sx={{ p: 4 }}>
                 <Stack spacing={2}>
                     <Typography variant="h4" color="error">
                         Access denied
@@ -22,7 +24,7 @@ export default function AccessDenied({ onGoHomeClick }) {
                     </Typography>
                     <Button 
                         variant="outlined" 
-                        onClick={() => onGoHomeClick()}
+                        onClick={() => { navigate('/') }}
                     >
                         Go home
                     </Button>

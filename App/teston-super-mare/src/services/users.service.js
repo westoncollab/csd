@@ -42,6 +42,26 @@ class UsersService {
         const res = await this._api.delete('/users/students', { data: { userIds } });
         return res.data    
     }
+
+    async addLecturer(firstName, lastName, email, password) {
+        const res = await this._api.post('/users/lecturers', { firstName, lastName, email, password });
+        return res.data
+    }
+
+    async getLecturers() {
+        const res = await this._api.get('/users/lecturers');
+        return res.data;
+    }
+
+    async updateLecturer(lecturer) {
+        const res = await this._api.put('/users/lecturers', { ...lecturer })  
+        return res.data
+    }
+
+    async deleteLecturers(userIds) {
+        const res = await this._api.delete('/users/lecturers', { data: { userIds } });
+        return res.data   
+    }
 }
 
 export default UsersService;
