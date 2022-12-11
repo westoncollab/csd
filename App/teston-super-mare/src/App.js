@@ -3,15 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Layout from './pages/Layout/Layout';
 import Registration from './pages/Registration';
+import Test from './pages/Student/Test';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import UsersService from './services/users.service';
-<<<<<<< HEAD
-import Test from "./pages/Test/Test";
 import Studentdashboard from "./pages/Studentdashboard/Studentdashboard";
-=======
-import Test from './pages/Student/Test';
-import StudentLeaderboard from './pages/Student/Leaderboard';
->>>>>>> main
+import StudentLeaderboard from './pages/Student/Leaderboard'; 
 import Login from './pages/Login/Login';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
 
