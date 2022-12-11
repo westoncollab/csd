@@ -37,7 +37,7 @@ class UsersController {
 
         this.db.query(`
         SELECT 
-            firstName, lastName, roleName, password 
+            users.userId, firstName, lastName, roleName, password 
         FROM
             users
         INNER JOIN roles ON 
@@ -51,10 +51,10 @@ class UsersController {
                 // Update the last login time but don't wait for a response.
                 this.db.query('UPDATE users SET lastLoginTime = NOW() WHERE email = ?', [email]);
 
-                const { firstName, lastName, roleName } = rows[0];
+                const { userId, firstName, lastName, roleName } = rows[0];
 
                 // TODO: Persistence: Sessions? Tokens? 
-                res.status(200).json({ email, firstName, lastName, roleName });
+                res.status(200).json({ userId, email, firstName, lastName, roleName });
             }
         })
     }

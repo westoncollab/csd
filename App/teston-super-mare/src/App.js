@@ -7,7 +7,7 @@ import Test from './pages/Student/Test';
 import LecturerDashboard from './pages/Lecturer/LecturerDashboard';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import UsersService from './services/users.service';
-import Studentdashboard from "./pages/Studentdashboard/Studentdashboard";
+import StudentDashboard from './pages/Student/Studentdashboard';
 import StudentLeaderboard from './pages/Student/Leaderboard'; 
 import Login from './pages/Login/Login';
 import AccessDenied from './pages/AccessDenied/AccessDenied';
@@ -23,11 +23,7 @@ function App() {
         
         return user;
     }
- 
-    function handleLogout() { // eslint-disable-line
-        setUser({ isAuthenticated: false });
-    }
-    
+  
     function ProtectedRoute({ requiredRole, children }) {
         return !user || user.roleName !== requiredRole ? <AccessDenied/> : children;
     }
@@ -52,9 +48,18 @@ function App() {
                 </ProtectedRoute>
             }
         />
+        <Route 
+            path="student"
+            element={
+                <ProtectedRoute requiredRole="Student">
+                    <StudentDashboard user={user}/>
+                </ProtectedRoute>
+            }
+        />
+        
         <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
-        <Route path='Studentdashboard' element={<Studentdashboard />} />
+
         <Route path='test' element={<Test
             testName='Programming 102'
             testId={1}
@@ -75,8 +80,7 @@ function App() {
               // { qid: 12, question: 'Which is the best flavour?', a: 'Orange', b: 'Rose', c: 'Marmite', answer: 'b'}
             ]}
             userId={1}
-        />} />
-        <Route path='student/leaderboard' element={<StudentLeaderboard userId={1} userSubject={1} />} />
+        />} /> 
       </Route>
     </Routes>
   </BrowserRouter>);
