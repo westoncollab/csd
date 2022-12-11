@@ -14,8 +14,7 @@ export default function AccessDenied() {
                 alignItems: 'center'
             }}
         >
-            <Paper 
-            >
+            <Paper sx={{ p: 4 }}>
                 <Stack spacing={2}>
                     <Typography variant="h4" color="error">
                         Access denied
