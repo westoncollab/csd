@@ -2,14 +2,17 @@ import { Button, CircularProgress, FormControl, FormControlLabel, FormHelperText
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TestService from '../../services/test.service';
+import { useNavigate } from 'react-router-dom';
 
+const questionsToGet = 5;
 const testService = new TestService();
 const Test = ({ user }) => {
+    const navigate = useNavigate();
+
     const { userId } = user;
     const { testId } = useParams();
-    const [testName, setTestName] = useState('');
-    const [subjects, setSubjects] = useState([]);
-    const [createdByLecturer, setLecturer] = useState('');
+
+    const [testInfo, setTestInfo] = useState({ name: '', subjects: '', lecturer: '' });
     const [questions, setQuestions] = useState([]);
     const [questionAnswers, setQuestionAnswers] = useState(new Map(
         questions.map(q => [q.qid, null ])
@@ -18,7 +21,15 @@ const Test = ({ user }) => {
     const [progress, setProgress] = useState(0);
     const [alert, setAlert] = useState('');
 
+    useEffect(() => {
+        testService.getTestToDo(testId, userId, questionsToGet).then(({ newTestInfo, newQuestions }) => {
+            setTestInfo(newTestInfo);
+            setQuestions(newQuestions);
+        })
+    }, []);
+
     function answeredQuestions() {
+        console.log(questionAnswers);
         return Array.from(questionAnswers.values()).reduce((total, a) => a ? total + 1 : total, 0);
     }
     function correctlyAnsweredQuestions() {
@@ -48,7 +59,8 @@ const Test = ({ user }) => {
         setAlert('loading');
         testService.saveTestResults(
             questions.map(q => ({ qid: q.qid, correct: answeredQuestionCorrectly(q.qid) })), 
-            userId
+            userId,
+            testId
         ).then(response => {
             setAlert('success');
         }).catch(() => {
@@ -69,8 +81,8 @@ const Test = ({ user }) => {
             <Stack sx={{ height: 1 }} spacing={3} alignItems='center'>
                 {/* heading */}
                 <Stack spacing={1} direction='row' alignItems='baseline'> 
-                    <h2>{testName}</h2>
-                    <p>{subjects.join(', ')} - created by {createdByLecturer}</p>
+                    <h2>{testInfo.name}</h2>
+                    <p>{testInfo.subjects} - created by {testInfo.lecturer}</p>
                 </Stack>
                 
                 {/*test questions*/}
@@ -118,7 +130,7 @@ const Test = ({ user }) => {
                         : alert === 'success' ? <p>Results saved successfully.</p>
                         : null}
                         <p>{correctlyAnsweredQuestions()}/{maxQuestions()} correct</p>
-                        <Button href='/' variant='outlined'>Go back</Button>
+                        <Button variant='outlined' onClick={() => navigate('/student')}>Go back</Button>
                     </Stack>
                 }
             </Stack>

@@ -211,6 +211,129 @@ class TestsController {
             res.send(err);
         }
     }
+
+    async _assembleWeightedQuestions (testQuestions, studentId) {
+        // edit these to balance likelihood of seeing correctly/incorrectly answered questions again
+        const correctWeighting = -0.5;
+        const incorrectWeighting = 1;
+        const maximumWeight = 10;
+        const defaultWeight = maximumWeight / 2;
+        const weightQuestions = (results) => {
+            return new Map(testQuestions.map(q => {
+                const weight = Math.round(results
+                    .filter(r => r.questionId == q.questionId)
+                    .reduce((total, curr) => total + (curr.correct ? correctWeighting : incorrectWeighting), defaultWeight)
+                );
+                return [
+                    q.questionId,
+                    // keep weight in range between 1 and maximumWeight
+                    weight > maximumWeight ? maximumWeight
+                    : weight < 1 ? 1
+                    : weight
+                ];
+            }));
+        }
+
+        // get weights
+        const prevResults = await this.db.query(`
+            SELECT * FROM \`testResults\` WHERE \`studentId\` = ? AND \`questionId\` IN (?);
+        `, [studentId, testQuestions.map(q => q.questionId).join(', ')]);
+        const questionWeights = weightQuestions (prevResults);
+                
+        // assemble array to pick from
+        let weightedQuestions = [];
+        Array.from(questionWeights.keys()).forEach(qid => {
+            const numOfTimes = questionWeights.get(qid);
+            const qidsToAdd = Array.from(new Array(numOfTimes).keys()).map(() => qid);
+            weightedQuestions = weightedQuestions.concat(qidsToAdd);
+        });
+        return weightedQuestions;
+    }
+
+    _randomiseQuestionAnswers (q) {
+        // randomise order of answers so it's not always the first one
+        const answers = [
+            q.correctAnswer,
+            q.incorrectAnswerA,
+            q.incorrectAnswerB,
+            q.incorrectAnswerC
+        ].filter(a => a) // remove null answers if there are less than four
+        .sort(() => Math.random() - 0.5); // random order
+        return {
+            qid: q.questionId,
+            question: q.question,
+            a: answers[0],
+            b: answers[1],
+            c: answers[2] ?? undefined,
+            d: answers[3] ?? undefined,
+            answer: ['a', 'b', 'c', 'd'][answers.findIndex(a => a === q.correctAnswer)]
+        };
+    } 
+
+    async getTestToDo (req, res) {
+        try {
+            const testId = Number(req.query.id);
+            const studentId = Number(req.query.uid);
+            const numQuestionsToGet = Number(req.query.n);
+
+            const [ testData, testQuestions ] = await Promise.all([
+                this.db.query(`
+                    SELECT DISTINCT
+                        \`tests\`.\`name\`,
+                        CONCAT(\`users\`.\`firstName\`, " ", \`users\`.\`lastName\`) AS lecturerName,
+                        \`subjects\`.\`subjectName\`
+                    FROM \`tests\`
+                    JOIN \`users\` ON \`tests\`.\`createdByLecturerId\` = \`users\`.\`userId\`
+                    JOIN \`testQuestions\` ON \`tests\`.\`testId\` = \`testQuestions\`.\`testId\`
+                    JOIN \`questions\` ON \`testQuestions\`.\`questionId\` = \`questions\`.\`questionId\`
+                    JOIN \`subjects\` ON \`questions\`.\`subjectId\` = \`subjects\`.\`subjectId\` 
+                    WHERE \`tests\`.\`testId\` = ?;
+                `, [testId]),
+                this.db.query(`
+                    SELECT
+                        \`questions\`.\`questionId\`,
+                        \`questions\`.\`question\`,
+                        \`questions\`.\`correctAnswer\`,
+                        \`questions\`.\`incorrectAnswerA\`,
+                        \`questions\`.\`incorrectAnswerB\`,
+                        \`questions\`.\`incorrectAnswerC\`
+                    FROM \`questions\`
+                    JOIN \`testQuestions\` ON \`questions\`.\`questionId\` = \`testQuestions\`.\`questionId\`
+                    WHERE \`testQuestions\`.\`testId\` = ?;
+                `, [testId])
+            ]);
+
+            // test info: { testName, lecturer, subjects }
+            const testInfo = testData.reduce((testInfo, curr) => ({
+                    name: curr.name,
+                    lecturer: curr.lecturerName,
+                    subjects: testInfo.subjects.concat([curr.subjectName])
+                }), { name: '', lecturer: '', subjects: [] });
+            testInfo.subjects = testInfo.subjects.join(', ');
+            
+            // questions
+            let questions = [];
+            if (numQuestionsToGet > testQuestions.length) {
+                // use all questions in test
+                questions = testQuestions.map(this._randomiseQuestionAnswers);
+            } else {
+                let weightedQuestions = await this._assembleWeightedQuestions(testQuestions, studentId);
+
+                // choose questions at random
+                while (questions.length < numQuestionsToGet) {
+                    const nextQid = weightedQuestions[Math.floor(Math.random() * weightedQuestions.length)];
+                    weightedQuestions = weightedQuestions.filter(q => q !== nextQid); // don't pick question again
+                    const questionToAdd = testQuestions.find(q => q.questionId == nextQid);
+                    questions.push(this._randomiseQuestionAnswers(questionToAdd));
+                }
+            }
+
+            res.status(200).send({ newTestInfo: testInfo, newQuestions: questions });
+        } catch (err) {
+            console.log(err);
+            res.send(err);
+        }
+    }
 }
 
 module.exports = TestsController;

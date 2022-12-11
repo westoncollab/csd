@@ -59,9 +59,11 @@ function App() {
         <Route path="login" element={<Login onLoginClick={handleLogin} />} /> 
         <Route path='signup' element={<Registration />} />
 
-        <Route path='test/:testId' element={<ProtectedRoute requiredRole="Student">
-            <Test user={user} />
-        </ProtectedRoute>} /> 
+        <Route path='test/:testId' element={
+            <ProtectedRoute requiredRole="Student">
+                <Test user={ user } />
+            </ProtectedRoute>
+        } /> 
       </Route>
     </Routes>
   </BrowserRouter>);

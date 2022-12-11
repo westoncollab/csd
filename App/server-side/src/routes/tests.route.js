@@ -7,4 +7,5 @@ module.exports = function testsRoute(app, db) {
 
     app.get('/results/leaderboard', (req, res) => testsController.getStudentLeaderboard(req, res));
     app.get('/tests/student', (req, res) => testsController.getTestsOfSubject(req, res));
+    app.get('/tests/doTest', (req, res) => testsController.getTestToDo(req, res));
 }
