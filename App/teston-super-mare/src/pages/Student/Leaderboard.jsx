@@ -35,9 +35,6 @@ const StudentLeaderboard = ({ userId }) => {
     }
 
     return (<>
-        <Button variant='contained' href='/' style={{ position: 'absolute', top: '100px', left: '15vw' }}>
-            Back to dashboard
-        </Button>
         <Paper style={{ width: '30vw', minWidth: '280px' }} sx={{ p: 5 }}>
             <Stack alignItems='center'>
                 <h2>Top {Math.min(topNum, totalStudents)} Students</h2>

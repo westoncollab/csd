@@ -23,3 +23,9 @@ after cloning we need to:
 3. Start as ususal.
 
 If these variables are not defined an exception will be thrown on program startup.
+
+## Account Details for Testing
+
+- Admin: `admin@test.com`: Password: `password`
+- Student: `bill@test.com`: Password: `password`
+- Lecturer: `stacy@test.ac.uk` Password: `password`
